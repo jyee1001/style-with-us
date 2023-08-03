@@ -1,0 +1,16 @@
+[Dependencies]
+-Download Node.js on computer
+-Use VScode as IDE
+-Download the ES7 + React/Redux extension on VScode 
+
+[package downloads]
+npx expo install firebase
+npm install @react-navigation/native @react-navigation/native-stack
+npx expo install react-native-screens react-native-safe-area-context
+
+
+How to run the application
+
+-download application "Expo Go" on ios
+-run cmd "expo start" in cli
+-scan QR code with iphone and open on Expo Go

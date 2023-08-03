@@ -1,0 +1,13 @@
+
+Required Features
+
+Login/Signup Screen - Connect a database pref Google Firebase
+
+Connect Weather API - Open Weather Map -https://openweathermap.org/api 
+
+Virtual Closet Organization: Allows users to organize their virtual wardrobe by categories like tops, bottoms, dresses, shoes, etc. 
+Users can easily add, remove, and rearrange items within their closet.
+
+Outfit Generator:
+
+User profile: 
