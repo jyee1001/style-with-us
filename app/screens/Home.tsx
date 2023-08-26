@@ -1,4 +1,4 @@
-import { View, Text, Button } from 'react-native'
+import { View, Text, Button, StyleSheet } from 'react-native'
 import React from 'react'
 import { NavigationContainer, NavigationProp } from '@react-navigation/native';
 import { FIREBASE_AUTH } from '../../FirebaseConfig';
@@ -15,7 +15,7 @@ interface RouterProps {
 
 const Home = ({ navigation }: RouterProps) => {
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <View style={styles.container}>
             <Button onPress={() => navigation.navigate('Planner')} title="open page" />
             <Button onPress={() => FIREBASE_AUTH.signOut()} title="Logout" />
 
@@ -24,4 +24,11 @@ const Home = ({ navigation }: RouterProps) => {
     )
 }
 
-export default Home
+
+export default Home;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1, justifyContent: 'center', alignItems: 'center', backgroundColor: 'black'
+    }
+});
