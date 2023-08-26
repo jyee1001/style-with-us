@@ -1,12 +1,12 @@
-import { View, Text, SafeAreaView } from 'react-native'
-import React from 'react'
+import { View, Text, SafeAreaView } from "react-native";
+import React from "react";
 
 const Closet = () => {
-    return (
-        <View>
-            <Text>Closet</Text>
-        </View>
-    )
-}
+  return (
+    <View>
+      <Text>Closet</Text>
+    </View>
+  );
+};
 
-export default Closet
+export default Closet;
