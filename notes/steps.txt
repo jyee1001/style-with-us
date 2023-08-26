@@ -6,6 +6,7 @@
 [package downloads]
 npx expo install firebase
 npm install @react-navigation/native @react-navigation/native-stack
+npm install @react-navigation/bottom-tabs
 npx expo install react-native-screens react-native-safe-area-context
 
 

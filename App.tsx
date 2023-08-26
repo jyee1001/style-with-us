@@ -7,21 +7,26 @@ import Home from './app/screens/Home';
 import { User, onAuthStateChanged } from 'firebase/auth';
 import { useEffect, useState } from 'react';
 import { FIREBASE_AUTH } from './FirebaseConfig';
-import Example from './app/screens/Example';
+import Planner from './app/screens/Planner';
+import Closet from './app/screens/Closet';
+import Inside from './app/screens/Inside';
 
 
 const Stack = createNativeStackNavigator();
 
-const InsideStack = createNativeStackNavigator();
+// const InsideStack = createNativeStackNavigator();
 
-function InsideLayout() {
-  return (
-    <InsideStack.Navigator>
-      <InsideStack.Screen name="Inside" component={Home} />
-      <InsideStack.Screen name="Example" component={Example} />
-    </InsideStack.Navigator>
-  )
-}
+// function InsideLayout() {
+//   return (
+//     <InsideStack.Navigator >
+//       <InsideStack.Screen name="Inside" component={Inside} />
+//       {/* <InsideStack.Screen name="Home" component={Home} />
+//       <InsideStack.Screen name="Planner" component={Planner} />
+//       <InsideStack.Screen name="Closet" component={Closet} /> */}
+
+//     </InsideStack.Navigator>
+//   )
+// }
 export default function App() {
   const [user, setUser] = useState<User | null>(null);
 
@@ -34,9 +39,9 @@ export default function App() {
 
 
   return (
-    <NavigationContainer>
+    <NavigationContainer >
       <Stack.Navigator initialRouteName="Login">
-        {user ? (<Stack.Screen name="Inside" component={InsideLayout} options={{ headerShown: false }} />
+        {user ? (<Stack.Screen name="Inside" component={Inside} options={{ headerShown: false }} />
         ) : (
           <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
         )}

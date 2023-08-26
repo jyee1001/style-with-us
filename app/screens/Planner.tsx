@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const Example = () => {
+const Planner = () => {
     return (
         <View>
-            <Text>Example</Text>
+            <Text>Planner</Text>
         </View>
     )
 }
 
-export default Example
+export default Planner
