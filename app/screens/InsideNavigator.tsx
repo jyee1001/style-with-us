@@ -2,10 +2,10 @@ import { View, Text, StyleSheet } from "react-native";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Planner from "./Planner";
-import Closet from "./Closet";
-import Home from "./Home";
-import Profile from "./Profile";
+import Planner from "./planner/Planner";
+import Closet from "./closet/Closet";
+import Home from "./home/Home";
+import Profile from "./profile/Profile";
 import { Ionicons } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
