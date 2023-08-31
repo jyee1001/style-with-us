@@ -1,16 +1,15 @@
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import Login from './app/screens/Login';
-import Home from './app/screens/Home';
-import { User, onAuthStateChanged } from 'firebase/auth';
-import { useEffect, useState } from 'react';
-import { FIREBASE_AUTH } from './FirebaseConfig';
-import Planner from './app/screens/Planner';
-import Closet from './app/screens/Closet';
-import Inside from './app/screens/Inside';
-
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import Login from "./app/screens/auth/Login";
+import Home from "./app/screens/home/Home";
+import { User, onAuthStateChanged } from "firebase/auth";
+import { useEffect, useState } from "react";
+import { FIREBASE_AUTH } from "./FirebaseConfig";
+import Planner from "./app/screens/planner/Planner";
+import Closet from "./app/screens/closet/Closet";
+import Inside from "./app/screens/InsideNavigator";
 
 const Stack = createNativeStackNavigator();
 
@@ -32,18 +31,26 @@ export default function App() {
 
   useEffect(() => {
     onAuthStateChanged(FIREBASE_AUTH, (user) => {
-      console.log('user', user);
+      console.log("user", user);
       setUser(user);
-    })
+    });
   }, []);
 
-
   return (
-    <NavigationContainer >
+    <NavigationContainer>
       <Stack.Navigator initialRouteName="Login">
-        {user ? (<Stack.Screen name="Inside" component={Inside} options={{ headerShown: false }} />
+        {user ? (
+          <Stack.Screen
+            name="Inside"
+            component={Inside}
+            options={{ headerShown: false }}
+          />
         ) : (
-          <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+          <Stack.Screen
+            name="Login"
+            component={Login}
+            options={{ headerShown: false }}
+          />
         )}
       </Stack.Navigator>
     </NavigationContainer>
