@@ -56,7 +56,7 @@ const Login = () => {
     <View style={styles.container}>
       <Image
         style={styles.logo}
-        source={{ uri: "https://i.ibb.co/frnmnHs/stylewithus-LOGO.jpg" }}
+        source={{ uri: "https://i.ibb.co/wskCQMB/style-with-us-logo.png" }}
       />
 
       <KeyboardAvoidingView behavior="padding">
@@ -80,8 +80,8 @@ const Login = () => {
           <ActivityIndicator size="large" color="#0000ff" />
         ) : (
           <>
-            <Button title="Login" onPress={signIn} />
-            <Button title="Create Account" onPress={signUp} />
+            <Button color="white" title="Login" onPress={signIn} />
+            <Button color="white" title="Create Account" onPress={signUp} />
           </>
         )}
       </KeyboardAvoidingView>
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "flex-start",
-    backgroundColor: "#8F6E5D",
+    backgroundColor: "black",
     alignItems: "center",
     //flexDirection: 'column'
   },
