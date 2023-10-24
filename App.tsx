@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 import { FIREBASE_AUTH } from "./FirebaseConfig";
 import Planner from "./app/screens/planner/Planner";
 import Closet from "./app/screens/closet/Closet";
-import Inside from "./app/screens/InsideNavigator";
+import Inside from "./app/screens/navigators/InsideNavigator";
 
 const Stack = createNativeStackNavigator();
 

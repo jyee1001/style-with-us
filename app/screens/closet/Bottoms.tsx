@@ -1,12 +1,12 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const ClosetNavigator = () => {
+const Bottoms = () => {
   return (
     <View>
-      <Text>ClosetNavigator</Text>
+      <Text>Bottasdasdaoms</Text>
     </View>
   );
 };
 
-export default ClosetNavigator;
+export default Bottoms;
