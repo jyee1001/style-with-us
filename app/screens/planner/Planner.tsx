@@ -1,11 +1,24 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Button } from "react-native";
 import React, { useState } from "react";
 import { Calendar } from "react-native-calendars";
+import { NavigationProp } from "@react-navigation/native";
 
-const Planner = () => {
+type PlannerProps = {
+  navigation: NavigationProp<any, any>;
+};
+
+const Planner: React.FC<PlannerProps> = ({ navigation }) => {
   const [date, setDate] = useState("");
+  const [outfit, setOutfit] = useState("");
+
   const dateSelect = (day: { dateString: string }) => {
+    const currentOutfit = "Description of your Outfit";
     setDate(day.dateString);
+    setOutfit(currentOutfit);
+  };
+
+  const navigateToOutfitScreen = () => {
+    navigation.navigate("Outfit");
   };
 
   return (
@@ -15,15 +28,25 @@ const Planner = () => {
       </View>
       <View style = {styles.calendarContainer}>
         <Calendar
-          current = {"2023-09-20"}
+          style={{
+            width: 400,
+            height: 300
+          }}
+          current = {"2023-10-26"}
           onDayPress = {dateSelect}
         />
       </View>
       {date !== "" && (
         <View style = {styles.dateContainer}>
           <Text>Date: {date}</Text>
-          <Text>Outfit for the Day: :)</Text>
+          <Text>Outfit for the Day: {outfit || "Nothing Planned"}</Text>
         </View>
+      )}
+      {date !== "" && (
+        <Button
+          title="Add/Edit Outfit"
+          onPress={navigateToOutfitScreen}
+        />
       )}
     </View>
   );
