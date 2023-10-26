@@ -17,7 +17,7 @@ const Home = ({ navigation }: RouterProps) => {
         onPress={() => navigation.navigate("Planner")}
         title="open page"
       />
-      <Button onPress={() => FIREBASE_AUTH.signOut()} title="Logout" />
+      <Button onPress={() => FIREBASE_AUTH.signOut()} title="Logo" />
     </View>
   );
 };
