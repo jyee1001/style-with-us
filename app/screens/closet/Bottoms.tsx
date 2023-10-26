@@ -1,5 +1,7 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
+
+import { RNCamera } from "react-native-camera";
 
 const Bottoms = () => {
   return (

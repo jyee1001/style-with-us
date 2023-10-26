@@ -8,6 +8,7 @@ import Home from "../home/Home";
 import Profile from "../profile/Profile";
 import { Ionicons } from "@expo/vector-icons";
 import ClosetNavigator from "./ClosetNavigator";
+import Camera from "../camera.tsx/Camera";
 
 const Tab = createBottomTabNavigator();
 
@@ -44,6 +45,21 @@ const Inside = () => {
             <Ionicons
               style={styles.tabBarIconContainer}
               name="body-outline"
+              size={size}
+              color={color}
+            />
+          ),
+          tabBarLabel: "",
+        }}
+      />
+      <Tab.Screen
+        name="Camera"
+        component={Camera}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons
+              style={styles.tabBarIconContainer}
+              name="camera"
               size={size}
               color={color}
             />
