@@ -1,9 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
-import { getFirestore } from  'firebase/firestore';
-
-
-
+import { getFirestore } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -12,10 +9,10 @@ const firebaseConfig = {
   projectId: "style-with-us",
   storageBucket: "style-with-us.appspot.com",
   messagingSenderId: "664885606765",
-  appId: "1:664885606765:web:ed82dfca92ffdce3928264"
+  appId: "1:664885606765:web:ed82dfca92ffdce3928264",
 };
 
 // Initialize Firebase
 export const FIREBASE_APP = initializeApp(firebaseConfig);
 export const FIREBASE_AUTH = getAuth(FIREBASE_APP);
-export const FIERSTORE_DB = getFirestore(FIREBASE_APP);
+export const FIRESTORE_DB = getFirestore(FIREBASE_APP);
