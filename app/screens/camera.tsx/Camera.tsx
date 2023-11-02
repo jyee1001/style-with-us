@@ -4,6 +4,7 @@ import { Camera as ExpoCamera, CameraType } from "expo-camera";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
 import { StatusBar } from "expo-status-bar";
+import RNPickerSelect from "react-native-picker-select";
 
 const Camera = () => {
   // const [permission, requestPermission] = ExpoCamera.useCameraPermissions();
@@ -42,6 +43,15 @@ const Camera = () => {
         style={styles.pictureButton}
         onPress={takePhoto}
       ></TouchableOpacity>
+      <RNPickerSelect
+        onValueChange={(value) => console.log(value)}
+        items={[
+          { label: "Tops", value: "JavaScript" },
+          { label: "Bottoms", value: "TypeScript" },
+          { label: "Outerwear", value: "Python" },
+          { label: "Accesories", value: "Java" },
+        ]}
+      />
     </SafeAreaView>
   );
 };

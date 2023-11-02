@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const Outwear = () => {
+const Outerwear = () => {
   return (
     <View>
       <Text>Outwear</Text>
@@ -9,4 +9,4 @@ const Outwear = () => {
   );
 };
 
-export default Outwear;
+export default Outerwear;
