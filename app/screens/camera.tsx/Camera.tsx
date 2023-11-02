@@ -1,47 +1,71 @@
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-import React, { useRef, useState } from "react";
-import { RNCamera } from "react-native-camera";
+import { View, Text, TouchableOpacity, StyleSheet, Button } from "react-native";
+import React, { useRef, useState, useEffect } from "react";
+import { Camera as ExpoCamera, CameraType } from "expo-camera";
+import { SafeAreaView } from "react-native-safe-area-context";
+import * as ImagePicker from "expo-image-picker";
+import { StatusBar } from "expo-status-bar";
 
 const Camera = () => {
-  const cameraRef = useRef(null);
-  const [imageUri, setImageUri] = useState(null);
+  // const [permission, requestPermission] = ExpoCamera.useCameraPermissions();
 
-  const takePicture = async () => {
-    if (cameraRef.current) {
-      const options = { quality: 0.5, base64: true };
-      //const data = await cameraRef.current.takePictureAsync(options);
+  // const [type, setType] = useState(CameraType.back);
+  // const [isTakingPicture, setIsTakingPicture] = useState(false);
+  // const cameraRef = useRef<ExpoCamera | null>(null);
 
-      //setImageUri(data.uri);
+  const [permission, requestPermission] = ImagePicker.useCameraPermissions();
+
+  if (permission?.status !== ImagePicker.PermissionStatus.GRANTED) {
+    return (
+      <View style={styles.container}>
+        <Text>Permission Not Granted - {permission?.status}</Text>
+        <StatusBar style="auto" />
+        <Button title="Request Permission" onPress={requestPermission}></Button>
+      </View>
+    );
+  }
+
+  const takePhoto = async () => {
+    const cameraResp = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      quality: 1,
+    });
+
+    if (!cameraResp.canceled) {
+      console.log(cameraResp.assets[0].uri);
     }
   };
 
   return (
-    <View style={styles.body}>
-      <RNCamera
-        ref={cameraRef}
-        style={styles.preview}
-        type={RNCamera.Constants.Type.back}
-      />
-      <TouchableOpacity onPress={takePicture}>
-        <Text>Capture Photo</Text>
-      </TouchableOpacity>
-      {/* <TouchableOpacity onPress={uploadImageToFirebase}>
-        <Text>Upload to Firebase</Text>
-      </TouchableOpacity> */}
-    </View>
+    <SafeAreaView style={styles.container}>
+      <TouchableOpacity
+        style={styles.pictureButton}
+        onPress={takePhoto}
+      ></TouchableOpacity>
+    </SafeAreaView>
   );
 };
 
 export default Camera;
 
 const styles = StyleSheet.create({
-  body: {
+  container: {
+    backgroundColor: "#fff",
     flex: 1,
-  },
-  preview: {
-    flex: 1,
+    // justifyContent: "center",
     alignItems: "center",
-    justifyContent: "flex-end",
-    backgroundColor: "black",
+  },
+
+  pictureButton: {
+    padding: 30,
+    marginLeft: 10,
+    marginRight: 10,
+    width: 300,
+    height: 300,
+    marginTop: 10,
+    backgroundColor: "transparent",
+    borderWidth: 1,
+    borderColor: "grey",
+    borderRadius: 10,
   },
 });
