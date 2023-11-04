@@ -21,6 +21,7 @@ const Camera = () => {
   const [permission, requestPermission] = ImagePicker.useCameraPermissions();
   const [picture, setPicture] = useState("");
   const [category, setCategory] = useState("");
+  const [color, setColor] = useState("");
   const [attire, setAttire] = useState("");
 
   const user = getAuth().currentUser;
@@ -64,8 +65,6 @@ const Camera = () => {
 
         // Reset the state after submission
         setPicture("");
-        setCategory("");
-        setAttire("");
       } catch (error) {
         console.error("Error adding document: ", error);
       }
@@ -86,10 +85,12 @@ const Camera = () => {
           placeholder={{ label: "Select Clothing Category", value: "" }}
           onValueChange={(value) => setCategory(value)}
           items={[
-            { label: "Tops", value: "Tops" },
-            { label: "Bottoms", value: "Bottoms" },
-            { label: "Outerwear", value: "Outerwear" },
-            { label: "Accessories", value: "Accessories" },
+            { label: "Shirts", value: "Shirts" },
+            { label: "Shorts", value: "Shorts" },
+            { label: "Pants", value: "Pants" },
+            { label: "Jackets", value: "Jackets" },
+            { label: "Hats", value: "Hats" },
+            { label: "Shoes", value: "Shoes" },
           ]}
         />
       </View>
@@ -99,10 +100,24 @@ const Camera = () => {
           onValueChange={(value) => setAttire(value)}
           items={[
             { label: "Casual", value: "Casual" },
-            { label: "Business Casual", value: "Business Casual" },
             { label: "Formal", value: "Formal" },
             { label: "Athletic", value: "Athletic" },
-            { label: "Streetwear", value: "Streetwear" },
+          ]}
+        />
+      </View>
+      <View style={styles.pickerContainer}>
+        <RNPickerSelect
+          placeholder={{ label: "Select Main Color" }}
+          onValueChange={(value) => setColor(value)}
+          items={[
+            { label: "Blue", value: "Blue" },
+            { label: "Red", value: "Red" },
+            { label: "Green", value: "Green" },
+            { label: "Pink", value: "Pink" },
+            { label: "Yellow", value: "Yellow" },
+            { label: "White", value: "White" },
+            { label: "Black", value: "Black" },
+            { label: "Grey", value: "Grey" },
           ]}
         />
       </View>
