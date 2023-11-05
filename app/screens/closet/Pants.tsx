@@ -1,12 +1,12 @@
 import { View, Text } from "react-native";
 import React from "react";
 
-const Outerwear = () => {
+const Pants = () => {
   return (
     <View>
-      <Text>Outwear</Text>
+      <Text>Pants</Text>
     </View>
   );
 };
 
-export default Outerwear;
+export default Pants;
