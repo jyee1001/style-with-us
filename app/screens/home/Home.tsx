@@ -5,11 +5,9 @@ import { FIREBASE_AUTH } from "../../../FirebaseConfig";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Planner from "../planner/Planner";
 import Closet from "../closet/Closet";
-<<<<<<< HEAD
 import firebase from "firebase/app";
 import "firebase/auth";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-=======
 import { FIRESTORE_DB } from "../../../FirebaseConfig";
 import { doc, getDoc, setDoc, addDoc, collection, query, where, getDocs } from "firebase/firestore";
 
@@ -23,7 +21,6 @@ type ClothingItem = {
   style: ClothingStyle;
   mainColor: string;
 };
->>>>>>> updated_home_joel_branch
 
 interface RouterProps {
   navigation: NavigationProp<any, any>;
@@ -143,13 +140,8 @@ const Home = ({ navigation }: RouterProps) => {
       <Button onPress={() => setWeather(weather === "Hot" ? "Cold" : "Hot")} title="Toggle Weather" />
       <Button onPress={generateRandomOutfit} title="Generate Outfit" />
       <Button
-<<<<<<< HEAD
         onPress={() => console.log(getAuth().currentUser?.uid)}
         title="open page"
-=======
-        onPress={() => navigation.navigate("Planner")}
-        title="Open Planner"
->>>>>>> updated_home_joel_branch
       />
       <Button onPress={() => FIREBASE_AUTH.signOut()} title="Sign Out" />
     </View>
