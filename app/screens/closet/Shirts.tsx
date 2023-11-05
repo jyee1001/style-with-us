@@ -8,7 +8,10 @@ import GridView from "../GridView";
 
 interface Shirt {
   id: string;
-  imageUrl: string;
+  attire: string;
+  category: string;
+  color: string;
+  picture: string;
   description: string;
   // Add other fields as needed
 }
@@ -31,7 +34,7 @@ const Shirts = () => {
       querySnapshot.forEach((doc) => {
         // Push the data of each shirt into the shirtsData array
         shirtsData.push(doc.data() as Shirt);
-        console.log(doc.data() as Shirt);
+        console.log(doc.data().picture as Shirt);
       });
 
       setShirts(shirtsData);
@@ -46,29 +49,27 @@ const Shirts = () => {
   }, []);
 
   return (
-    // <GridView
-    //   data={shirts}
-    //   renderItem={(item) => (
-    //     <View style={styles.itemContainer}>
-    //       <Image source={{ uri: item.imageUrl }} style={styles.image} />
-    //       {/* Render other shirt details */}
-    //     </View>
-    //   )}
-    // ></GridView>
-    <FlatList
+    <GridView
       data={shirts}
-      keyExtractor={(item) => item.id}
-      renderItem={({ item }) => (
-        <View>
-          <Image
-            source={{ uri: item.imageUrl }}
-            style={{ width: 200, height: 200 }}
-          />
-          <Text>{item.description}</Text>
+      renderItem={(item) => (
+        <View style={styles.itemContainer}>
+          <Image source={{ uri: item.picture }} style={styles.image} />
           {/* Render other shirt details */}
         </View>
       )}
-    />
+    ></GridView>
+    // <FlatList
+    //   data={shirts}
+    //   keyExtractor={(item) => item.id}
+    //   renderItem={({ item }) => (
+    //     <View>
+    //       <Image
+    //         source={{ uri: item.imageUrl }}
+    //         style={{ width: 200, height: 200 }}
+    //       />
+    //     </View>
+    //   )}
+    // />
   );
 };
 
@@ -86,8 +87,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   image: {
-    width: "100%",
-    height: "100%",
+    width: 200,
+    height: 100,
     flex: 1,
     aspectRatio: 1,
   },
