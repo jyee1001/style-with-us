@@ -58,6 +58,7 @@ const Camera = () => {
           picture,
           category,
           attire,
+          color,
           timestamp: new Date().toISOString(), // You can use Firebase Server Timestamp here if needed
         });
 
