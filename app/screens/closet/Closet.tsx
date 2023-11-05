@@ -12,11 +12,6 @@ import { TouchableOpacity } from "react-native";
 import { NavigationProp } from "@react-navigation/native";
 import GridView from "../GridView";
 
-// interface TileProps {
-//   title: string;
-//   onPress: () => void;
-// }
-
 interface TileData {
   id: string;
   title: string;
@@ -36,9 +31,6 @@ const Closet: React.FC<RouterProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.blankBox}></View>
-      {/* <TouchableOpacity style={styles.tile} onPress={handleTilePress}>
-        <Text>Bottoms</Text>
-      </TouchableOpacity> */}
 
       <GridView
         data={[
@@ -47,12 +39,24 @@ const Closet: React.FC<RouterProps> = ({ navigation }) => {
             id: 1,
           },
           {
-            name: "Outwear",
+            name: "Shorts",
             id: 2,
           },
           {
-            name: "Bottoms",
+            name: "Pants",
             id: 3,
+          },
+          {
+            name: "Jackets",
+            id: 4,
+          },
+          {
+            name: "Hats",
+            id: 5,
+          },
+          {
+            name: "Shoes",
+            id: 6,
           },
         ]}
         renderItem={(item) => (
