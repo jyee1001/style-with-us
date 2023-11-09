@@ -9,6 +9,7 @@ import Profile from "../profile/Profile";
 import { Ionicons } from "@expo/vector-icons";
 import ClosetNavigator from "./ClosetNavigator";
 import Camera from "../camera.tsx/Camera";
+import PlannerNavigator from "./PlannerNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -69,8 +70,8 @@ const Inside = () => {
       />
 
       <Tab.Screen
-        name="Planner"
-        component={Planner}
+        name="PlannerNavigator"
+        component={PlannerNavigator}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons
