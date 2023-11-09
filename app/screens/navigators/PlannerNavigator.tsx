@@ -1,20 +1,17 @@
+import { View, Text } from "react-native";
 import React from "react";
-import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Planner from "../planner/Planner";
-import OutfitScreen from "../planner/OutfitScreen";
+import ChooseOutfitScreen from "../planner/ChooseOutfitScreen";
 
-const Stack = createNativeStackNavigator();
-
-const App = () => {
+const PlannerStack = createNativeStackNavigator();
+const PlannerNavigator = () => {
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="Planner" component={Planner} />
-        <Stack.Screen name="Outfit" component={OutfitScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <PlannerStack.Navigator>
+        <PlannerStack.Screen name="Planner" component={Planner} />
+        <PlannerStack.Screen name="Choose Outfit" component={ChooseOutfitScreen} />
+    </PlannerStack.Navigator>
   );
 };
 
-export default App;
+export default PlannerNavigator;
