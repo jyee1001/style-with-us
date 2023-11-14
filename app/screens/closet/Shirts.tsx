@@ -58,18 +58,6 @@ const Shirts = () => {
         </View>
       )}
     ></GridView>
-    // <FlatList
-    //   data={shirts}
-    //   keyExtractor={(item) => item.id}
-    //   renderItem={({ item }) => (
-    //     <View>
-    //       <Image
-    //         source={{ uri: item.imageUrl }}
-    //         style={{ width: 200, height: 200 }}
-    //       />
-    //     </View>
-    //   )}
-    // />
   );
 };
 
