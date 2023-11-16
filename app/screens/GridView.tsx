@@ -9,17 +9,7 @@ interface Props<T> {
 
 const GridView = <T extends any>(props: Props<T>) => {
   const { data, renderItem, col = 2 } = props;
-  // return (
-  //   <View style={styles.container}>
-  //     {data.map((item, index) => {
-  //       return (
-  //         <View key={index} style={{ width: `${100 / col}%` }}>
-  //           <View style={{ padding: 10 }}>{renderItem(item)}</View>
-  //         </View>
-  //       );
-  //     })}
-  //   </View>
-  // );
+
   const columnWidth = `${100 / col}%`;
 
   return (

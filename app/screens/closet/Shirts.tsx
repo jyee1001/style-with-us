@@ -5,6 +5,7 @@ import { collection, query, where, getDocs } from "firebase/firestore";
 
 import { FIRESTORE_DB } from "../../../FirebaseConfig";
 import GridView from "../GridView";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 interface Shirt {
   id: string;
@@ -49,15 +50,17 @@ const Shirts = () => {
   }, []);
 
   return (
-    <GridView
-      data={shirts}
-      renderItem={(item) => (
-        <View style={styles.itemContainer}>
-          <Image source={{ uri: item.picture }} style={styles.image} />
-          {/* Render other shirt details */}
-        </View>
-      )}
-    ></GridView>
+    <SafeAreaView>
+      <GridView
+        data={shirts}
+        renderItem={(item) => (
+          <View style={styles.itemContainer}>
+            <Image source={{ uri: item.picture }} style={styles.image} />
+            {/* Render other shirt details */}
+          </View>
+        )}
+      ></GridView>
+    </SafeAreaView>
   );
 };
 
@@ -65,7 +68,7 @@ export default Shirts;
 
 const styles = StyleSheet.create({
   itemContainer: {
-    height: 100,
+    height: 200,
     marginLeft: 10,
     marginRight: 10,
     backgroundColor: "white",
@@ -76,7 +79,7 @@ const styles = StyleSheet.create({
   },
   image: {
     width: 200,
-    height: 100,
+    height: 200,
     flex: 1,
     aspectRatio: 1,
   },

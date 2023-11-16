@@ -13,7 +13,7 @@ import Hats from "../closet/Hats";
 const ClosetStack = createNativeStackNavigator();
 const ClosetNavigator = () => {
   return (
-    <ClosetStack.Navigator>
+    <ClosetStack.Navigator screenOptions={{ headerShown: false }}>
       <ClosetStack.Screen name="Closet" component={Closet} />
       <ClosetStack.Screen name="Shirts" component={Shirts} />
       <ClosetStack.Screen name="Shorts" component={Shorts} />
