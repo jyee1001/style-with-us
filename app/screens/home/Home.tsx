@@ -160,7 +160,7 @@ const Home = ({ navigation }: RouterProps) => {
                 </View>
                 <View style={styles.descriptionContainer}>
                   <Text style={styles.outfitText}>
-                    {outfit.hat ? "Hat:" : ""} {outfit.hat?.color} {outfit.hat?.attire}
+                    {outfit.hat?.color} {outfit.hat ? "Hat" : ""}
                   </Text>
                 </View>
               </View>
@@ -173,7 +173,7 @@ const Home = ({ navigation }: RouterProps) => {
                 </View>
                 <View style={styles.descriptionContainer}>
                   <Text style={styles.outfitText}>
-                    {outfit.jacket ? "Jacket:" : ""} {outfit.jacket?.color} {outfit.jacket?.attire}
+                    {outfit.jacket?.color} {outfit.jacket ? "Jacket" : ""}
                   </Text>
                 </View>
               </View>
@@ -186,7 +186,7 @@ const Home = ({ navigation }: RouterProps) => {
                 </View>
                 <View style={styles.descriptionContainer}>
                   <Text style={styles.outfitText}>
-                    {outfit.shirt ? "Shirt:" : ""} {outfit.shirt?.color} {outfit.shirt?.attire}
+                    {outfit.shirt?.color} {outfit.shirt ? "Shirt" : ""}
                   </Text>
                 </View>
               </View>
@@ -199,8 +199,7 @@ const Home = ({ navigation }: RouterProps) => {
                 </View>
                 <View style={styles.descriptionContainer}>
                   <Text style={styles.outfitText}>
-                    {outfit.pants ? "Pants: " : "Shorts: "}
-                    {outfit.pants?.color || outfit.shorts?.color} {outfit.pants?.attire || outfit.shorts?.attire}
+                    {outfit.pants?.color || outfit.shorts?.color} {outfit.pants ? "Pants" : "Shorts"}
                   </Text>
                 </View>
               </View>
@@ -213,7 +212,7 @@ const Home = ({ navigation }: RouterProps) => {
                 </View>
                 <View style={styles.descriptionContainer}>
                   <Text style={styles.outfitText}>
-                    {outfit.shoes ? "Shoes:" : ""} {outfit.shoes?.color} {outfit.shoes?.attire}
+                    {outfit.shoes?.color} {outfit.shoes ? "Shoes" : ""}
                   </Text>
                 </View>
               </View>
