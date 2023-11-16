@@ -1,4 +1,11 @@
-import { View, Text, Image, StyleSheet, FlatList } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  FlatList,
+  SafeAreaView,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { collection, query, where, getDocs } from "firebase/firestore";
@@ -46,15 +53,17 @@ const Shoes = () => {
     getShoesFromFirestore();
   }, []);
   return (
-    <GridView
-      data={shoes}
-      renderItem={(item) => (
-        <View style={styles.itemContainer}>
-          <Image source={{ uri: item.picture }} style={styles.image} />
-          {/* Render other shirt details */}
-        </View>
-      )}
-    ></GridView>
+    <SafeAreaView>
+      <GridView
+        data={shoes}
+        renderItem={(item) => (
+          <View style={styles.itemContainer}>
+            <Image source={{ uri: item.picture }} style={styles.image} />
+            {/* Render other shirt details */}
+          </View>
+        )}
+      ></GridView>
+    </SafeAreaView>
   );
 };
 
@@ -62,7 +71,7 @@ export default Shoes;
 
 const styles = StyleSheet.create({
   itemContainer: {
-    height: 100,
+    height: 200,
     marginLeft: 10,
     marginRight: 10,
     backgroundColor: "white",

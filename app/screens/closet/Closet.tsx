@@ -79,7 +79,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // justifyContent: "center",
     // alignItems: "center",
-    backgroundColor: "black",
+    backgroundColor: "#1A1A1A",
   },
   tile: {
     padding: 16,
