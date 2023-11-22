@@ -6,6 +6,7 @@ import {
   Button,
   StyleSheet,
   FlatList,
+  Touchable,
 } from "react-native";
 import React from "react";
 import { TouchableOpacity } from "react-native";
@@ -68,6 +69,14 @@ const Closet: React.FC<RouterProps> = ({ navigation }) => {
           </TouchableOpacity>
         )}
       ></GridView>
+      <View style={styles.outfitContainer}>
+        <TouchableOpacity
+          style={styles.outfitsButton}
+          onPress={() => {
+            handleTilePress("Outfits");
+          }}
+        ></TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
@@ -108,5 +117,22 @@ const styles = StyleSheet.create({
     width: 20,
     height: 50,
     backgroundColor: "transparent",
+  },
+  outfitsButton: {
+    backgroundColor: "#B5734C",
+    marginLeft: 20,
+    borderRadius: 16,
+    height: 120,
+    width: 120,
+  },
+  outfitContainer: {
+    height: 180,
+    marginRight: 10,
+    marginLeft: 10,
+    marginBottom: 20,
+    borderRadius: 16,
+    backgroundColor: "#F8F8F8",
+    flex: 1,
+    justifyContent: "center",
   },
 });
