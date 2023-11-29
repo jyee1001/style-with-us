@@ -75,7 +75,17 @@ const Closet: React.FC<RouterProps> = ({ navigation }) => {
           onPress={() => {
             handleTilePress("Outfits");
           }}
-        ></TouchableOpacity>
+        >
+          <Text style={styles.text}>Outfits</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.outfitsButton}
+          onPress={() => {
+            handleTilePress("Home");
+          }}
+        >
+          <Text style={styles.text}>Add an Outfit</Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -124,6 +134,9 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     height: 120,
     width: 120,
+    alignContent: "center",
+    alignItems: "center",
+    justifyContent: "center",
   },
   outfitContainer: {
     height: 180,
@@ -134,5 +147,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#F8F8F8",
     flex: 1,
     justifyContent: "center",
+    flexDirection: "row",
+    alignContent: "center",
+    alignItems: "center",
+  },
+  text: {
+    fontWeight: "500",
   },
 });

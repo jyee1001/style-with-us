@@ -1,62 +1,21 @@
-import { View, Text, Button, Image, StyleSheet } from "react-native";
-import React from "react";
+import {
+  View,
+  Text,
+  Button,
+  Image,
+  StyleSheet,
+  SafeAreaView,
+  TouchableOpacity,
+  TextInput,
+} from "react-native";
+import React, { useEffect, useState } from "react";
 import { FIREBASE_AUTH } from "../../../FirebaseConfig";
+import { getAuth, updateProfile } from "firebase/auth";
+import { FIRESTORE_DB } from "../../../FirebaseConfig";
+import { doc, getDoc } from "firebase/firestore";
 
-const Profile = () => {
-  return (
+const Profile = () => {};
 
-    <View style={{ flex: 1, marginTop: 50, marginLeft: 15, marginRight: 15 }}>
-      <View style={styles.container}>
-        <View style={styles.circle} />
-      </View>
-      <View style={{ flexDirection: "row", alignItems: "center" }}>
-        <View style={{ flex: 1 }}>
-          <Text style={{ fontWeight: "bold", color: "black", fontSize: 16 }}>Age</Text>
-        </View>
-        <View>
-          <Button title="Edit" onPress={() => /*handleEdit*/("Age")} />
-        </View>
-      </View>
-
-      <View style={{ flexDirection: "row", alignItems: "center", marginTop: 40 }}>
-        <View style={{ flex: 1 }}>
-          <Text style={{ fontWeight: "bold", color: "black", fontSize: 16 }}>Gender</Text>
-        </View>
-        <View>
-          <Button title="Edit" onPress={() => /*handleEdit*/("Gender")} />
-        </View>
-      </View>
-
-      <View style={{ flexDirection: "row", alignItems: "center", marginTop: 40 }}>
-        <View style={{ flex: 1 }}>
-          <Text style={{ fontWeight: "bold", color: "black", fontSize: 16 }}>Race</Text>
-        </View>
-        <View>
-          <Button title="Edit" onPress={() => /*handleEdit*/("Race")} />
-        </View>
-      </View>
-
-      <View style={{ flexDirection: "row", alignItems: "center", marginTop: 40 }}>
-        <View style={{ flex: 1 }}>
-          <Text style={{ fontWeight: "bold", color: "black", fontSize: 16 }}>Height</Text>
-        </View>
-        <View>
-          <Button title="Edit" onPress={() => /*handleEdit*/("Height")} />
-        </View>
-      </View>
-
-      <View style={{ flexDirection: "row", alignItems: "center", marginTop: 40, marginBottom: 75 }}>
-        <View style={{ flex: 1 }}>
-          <Text style={{ fontWeight: "bold", color: "black", fontSize: 16 }}>Weight</Text>
-        </View>
-        <View>
-          <Button title="Edit" onPress={() => /*handleEdit*/("Weight")} />
-        </View>
-      </View>
-
-    </View>
-  );
-};
 const styles = StyleSheet.create({
   container: {
     flex: 1,
