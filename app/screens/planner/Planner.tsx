@@ -132,6 +132,10 @@ const Planner: React.FC<PlannerProps> = ({ navigation }) => {
     navigation.navigate("Choose Outfit", { date });
   };
 
+  const markedDates = {
+    [date]: { selected: true, marked: true, selectedColor: "blue" },
+  };
+
   return (
     <View style = {styles.container}>
       <View style = {styles.calendarContainer}>
@@ -142,6 +146,7 @@ const Planner: React.FC<PlannerProps> = ({ navigation }) => {
           }}
           current = {new Date().toISOString().split("T")[0]}
           onDayPress = {dateSelect}
+          markedDates={markedDates}
         />
       </View>
       {theOutfitId ? (
@@ -181,6 +186,7 @@ const styles = StyleSheet.create({
   },
   calendarContainer: {
     alignItems: "center",
+    marginBottom: 50,
   },
   dateContainer: {
     marginTop: 20,
