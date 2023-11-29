@@ -150,6 +150,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     justifyContent: "center",
     alignItems: "center",
+    width: 155,
   },
   image: {
     width: 40,

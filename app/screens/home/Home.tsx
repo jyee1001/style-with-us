@@ -42,10 +42,10 @@ const Home = ({ navigation }: RouterProps) => {
   const [outfit, setOutfit] = useState<{
     hat: ClothingItem | null;
     jacket: ClothingItem | null;
-    shirt: ClothingItem;
+    shirt: ClothingItem | null;
     pants: ClothingItem | null;
     shorts: ClothingItem | null;
-    shoes: ClothingItem;
+    shoes: ClothingItem | null;
   } | null>(null);
   const [outfitStyle, setOutfitStyle] = useState<ClothingStyle>("Casual");
   const [weather, setWeather] = useState<Weather>("Hot");
@@ -78,6 +78,90 @@ const Home = ({ navigation }: RouterProps) => {
   
 
   const generateRandomOutfit = async () => {
+    let theHat = null;
+    let theJacket = null;
+    const theShirt = await getRandomClothingItem("Shirts", outfitStyle);
+    let thePants = null;
+    let theShorts = null;
+    const theShoes = await getRandomClothingItem("Shoes", outfitStyle);
+
+    if (outfitStyle === "Casual") {
+      if (weather === "Hot") {
+        theHat = await getRandomClothingItem("Hats", "Casual");
+        theShorts = await getRandomClothingItem("Shorts", "Casual");
+        thePants = await getRandomClothingItem("Pants", "Casual");
+
+        if (!theShirt || !theShoes || !theHat || !thePants || !theShorts) {
+          setErrorMessage("You must have at least one hat, shirt, pants, shorts, and shoes to generate a Casual outfit for Hot weather.");
+          return;
+        }
+        if (Math.random() < 0.5) {
+          thePants = null;
+        } else {
+          theShorts = null;
+        }
+      }
+      if (weather === "Cold") {
+        theJacket = await getRandomClothingItem("Jackets", "Casual");
+        thePants = await getRandomClothingItem("Pants", "Casual");
+
+        if (!theShirt || !theShoes || !theJacket || !thePants) {
+          setErrorMessage("You must have at least one jacket, shirt, pants, and shoes to generate a Casual outfit for Cold weather.");
+          return;
+        }
+      }
+    }
+
+    if (outfitStyle === "Formal") {
+      if (weather === "Hot") {
+        thePants = await getRandomClothingItem("Pants", "Formal");
+
+        if (!theShirt || !theShoes || !thePants) {
+          setErrorMessage("You must have at least one shirt, pants, and shoes to generate a Formal outfit for Hot weather.");
+          return;
+        }
+      }
+      if (weather === "Cold") {
+        theJacket = await getRandomClothingItem("Jackets", "Formal");
+        thePants = await getRandomClothingItem("Pants", "Formal");
+
+        if (!theShirt || !theShoes || !theJacket || !thePants) {
+          setErrorMessage("You must have at least one jacket, shirt, pants, and shoes to generate a Formal outfit for Cold weather.");
+          return;
+        }
+      }
+    }
+
+    if (outfitStyle === "Athletic") {
+      if (weather === "Hot") {
+        theShorts = await getRandomClothingItem("Shorts", "Athletic");
+        thePants = await getRandomClothingItem("Pants", "Athletic");
+
+        if (!theShirt || !theShoes || !thePants || !theShorts) {
+          setErrorMessage("You must have at least one shirt, pants, shorts, and shoes to generate an Athletic outfit for Hot weather.");
+          return;
+        }
+        if (Math.random() < 0.5) {
+          thePants = null;
+        } else {
+          theShorts = null;
+        }
+      }
+      if (weather === "Cold") {
+        theJacket = await getRandomClothingItem("Jackets", "Athletic");
+        thePants = await getRandomClothingItem("Pants", "Athletic");
+
+        if (!theShirt || !theShoes || !theJacket || !thePants) {
+          setErrorMessage("You must have at least one jacket, shirt, pants, and shoes to generate an Athletic outfit for Cold weather.");
+          return;
+        }
+      }
+    }
+
+    setErrorMessage(null);
+    setOutfit({ hat: theHat, jacket: theJacket, shirt: theShirt, pants: thePants, shorts: theShorts, shoes: theShoes });
+
+    /*
     let hat = null;
     if (weather === "Hot" && outfitStyle === "Casual") {
       hat = await getRandomClothingItem("Hats", outfitStyle);
@@ -114,14 +198,25 @@ const Home = ({ navigation }: RouterProps) => {
     const shoes = await getRandomClothingItem("Shoes", outfitStyle);
 
     if (!shirt || !shoes || (!pants && !shorts)) {
-      setErrorMessage("You must have at least one hat, jacket, shirt, pants, shorts, and shoes for each Outfit Style. (Except you do NOT need to have a Formal/Athletic hat and Formal shorts)");
-      return;
+      if (outfitStyle === "Casual") {
+        setErrorMessage("You must have at least one hat, jacket, shirt, pants, shorts, and shoes for this Outfit Style (Casual).");
+        return;
+      }
+      if (outfitStyle === "Formal") {
+        setErrorMessage("You must have at least one jacket, shirt, pants, and shoes for this Outfit Style (Formal).");
+        return;
+      }
+      if (outfitStyle === "Athletic") {
+        setErrorMessage("You must have at least one jacket, shirt, pants, shorts, and shoes for this Outfit Style (Athletic).");
+        return;
+      }
     }
     else {
       setErrorMessage(null);
     }
 
     setOutfit({ hat, jacket, shirt, pants, shorts, shoes });
+    */
   };
 
   const saveOutfit = async () => {
@@ -131,10 +226,10 @@ const Home = ({ navigation }: RouterProps) => {
         const outfitData = {
           hatId: outfit.hat?.id || null,
           jacketId: outfit.jacket?.id || null,
-          shirtId: outfit.shirt.id,
+          shirtId: outfit.shirt?.id || null,
           pantsId: outfit.pants?.category === "Pants" ? outfit.pants?.id : null,
           shortsId: outfit.shorts?.category === "Shorts" ? outfit.shorts?.id : null,
-          shoesId: outfit.shoes.id,
+          shoesId: outfit.shoes?.id || null,
           style: outfitStyle,
           userId: getAuth().currentUser?.uid,
         };
