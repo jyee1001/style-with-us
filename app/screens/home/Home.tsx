@@ -885,7 +885,9 @@ const Home = ({ navigation }: RouterProps) => {
             </View>
           )}
 
-          <Button onPress={saveOutfit} title="Save Outfit" />
+          <TouchableOpacity onPress={saveOutfit} style={styles.saveButton}>
+            <Text>Save Outfit</Text>
+          </TouchableOpacity>
         </View>
       )}
 
@@ -897,16 +899,16 @@ const Home = ({ navigation }: RouterProps) => {
       <View style={styles.homeAdjusts}>
         <View style={styles.pickerContainer}>
           <RNPickerSelect
-            placeholder={{ label: "Select Outfit Style", value: "" }}
+            placeholder={{ label: " Select Outfit Style", value: "" }}
             onValueChange={(value) => setOutfitStyle(value)}
             items={[
-              { label: "Casual", value: "Casual" },
-              { label: "Formal/Elegant", value: "Formal/Elegant" },
-              { label: "Business Casual", value: "Business Casual" },
-              { label: "Sporty", value: "Sporty" },
-              { label: "Relaxed", value: "Relaxed" },
-              { label: "Streetwear", value: "Streetwear" },
-              { label: "Retro", value: "Retro" },
+              { label: " Casual", value: "Casual" },
+              { label: " Formal/Elegant", value: "Formal/Elegant" },
+              { label: " Business Casual", value: "Business Casual" },
+              { label: " Sporty", value: "Sporty" },
+              { label: " Relaxed", value: "Relaxed" },
+              { label: " Streetwear", value: "Streetwear" },
+              { label: " Retro", value: "Retro" },
             ]}
           />
         </View>
@@ -915,24 +917,24 @@ const Home = ({ navigation }: RouterProps) => {
             placeholder={{ label: "Select Weather", value: "" }}
             onValueChange={(value) => setWeather(value)}
             items={[
-              { label: "Sunny", value: "Sunny" },
-              { label: "Cloudy", value: "Cloudy" },
-              { label: "Rainy", value: "Rainy" },
-              { label: "Snowy", value: "Snowy" },
+              { label: " Sunny", value: "Sunny" },
+              { label: " Cloudy", value: "Cloudy" },
+              { label: " Rainy", value: "Rainy" },
+              { label: " Snowy", value: "Snowy" },
               {
-                label: "Hot (80\u00b0F or more)",
+                label: " Hot (80\u00b0F or more)",
                 value: "Hot (80\u00b0F or more)",
               },
               {
-                label: "Warm (70\u00b0F to 80\u00b0F)",
+                label: " Warm (70\u00b0F to 80\u00b0F)",
                 value: "Warm (70\u00b0F to 80\u00b0F)",
               },
               {
-                label: "Cool (60 \u00b0F to 70\u00b0F)",
+                label: " Cool (60 \u00b0F to 70\u00b0F)",
                 value: "Cool (60 \u00b0F to 70\u00b0F)",
               },
               {
-                label: "Cold (less than 60\u00b0F)",
+                label: " Cold (less than 60\u00b0F)",
                 value: "Cold (less than 60\u00b0F)",
               },
             ]}
@@ -953,7 +955,7 @@ const Home = ({ navigation }: RouterProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F5E2B8",
+    backgroundColor: "#36393e",
     alignItems: "center",
 
     justifyContent: "flex-start",
@@ -984,13 +986,13 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FAF9F6",
+    backgroundColor: "#fff",
+    borderRadius: 6,
   },
 
   outfitContainer: {
     flex: 1,
     width: "50%",
-    justifyContent: "center",
   },
 
   clothingItemContainer: {
@@ -1008,6 +1010,9 @@ const styles = StyleSheet.create({
     width: 75,
     height: 75,
     resizeMode: "cover",
+    borderColor: "#7289da",
+    borderRadius: 8,
+    borderWidth: 3,
   },
 
   descriptionContainer: {
@@ -1021,8 +1026,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   weatherContainer: {
-    backgroundColor: "#FAF9F6",
-    marginBottom: 100,
+    backgroundColor: "#fff",
+    marginBottom: 50,
     width: "90%",
     height: "8%",
     marginLeft: 20,
@@ -1051,6 +1056,21 @@ const styles = StyleSheet.create({
   weatherText: {
     fontSize: 30,
     marginLeft: 10,
+  },
+  saveButton: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    paddingVertical: 6,
+    paddingHorizontal: 14,
+    borderRadius: 6,
+    backgroundColor: "#7289da",
+    borderColor: "transparent", // No border
+    borderWidth: 0, // No border
+    boxShadow: "0px 0.5px 1px rgba(0, 0, 0, 0.1)", // Not supported, use elevation for shadows
+    elevation: 2, // For Android shadow
+    userSelect: "none",
+    touchAction: "manipulation",
   },
 });
 
