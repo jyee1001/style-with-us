@@ -3,16 +3,17 @@ import {
   Text,
   Image,
   StyleSheet,
+  TouchableOpacity,
   FlatList,
   ScrollView,
+  SafeAreaView,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { collection, query, where, getDocs } from "firebase/firestore";
-import { doc, getDoc } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { collection, query, where, getDocs, doc, deleteDoc, getDoc } from "firebase/firestore";
+
 import { FIRESTORE_DB } from "../../../FirebaseConfig";
 import GridView from "../GridView";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 interface Outfit {
   hatId: string;
@@ -33,19 +34,10 @@ interface ClothingItem {
 const Outfits = () => {
   const userID = getAuth().currentUser?.uid;
   const [outfits, setOutfits] = useState<Outfit[]>([]);
-  const [clothingItemsArray, setClothingItemsArray] = useState<
-    ClothingItem[][]
-  >([]);
+  const [clothingItemsArray, setClothingItemsArray] = useState<ClothingItem[][]>([]);
 
-  const getClothingItemDetails = async (
-    clothingItemId: string,
-    collectionName: string
-  ) => {
-    const clothingItemDocRef = doc(
-      FIRESTORE_DB,
-      collectionName,
-      clothingItemId
-    );
+  const getClothingItemDetails = async (clothingItemId: string, collectionName: string) => {
+    const clothingItemDocRef = doc(FIRESTORE_DB, collectionName, clothingItemId);
     const clothingItemDocSnap = await getDoc(clothingItemDocRef);
 
     if (clothingItemDocSnap.exists()) {
@@ -67,80 +59,67 @@ const Outfits = () => {
     }
 
     if (outfit.jacketId) {
-      const clothingItem = await getClothingItemDetails(
-        outfit.jacketId,
-        "Jackets"
-      );
+      const clothingItem = await getClothingItemDetails(outfit.jacketId, "Jackets");
       if (clothingItem) items.push(clothingItem);
     }
 
     if (outfit.pantsId) {
-      const clothingItem = await getClothingItemDetails(
-        outfit.pantsId,
-        "Pants"
-      );
+      const clothingItem = await getClothingItemDetails(outfit.pantsId, "Pants");
       if (clothingItem) items.push(clothingItem);
     }
 
     if (outfit.shirtId) {
-      const clothingItem = await getClothingItemDetails(
-        outfit.shirtId,
-        "Shirts"
-      );
+      const clothingItem = await getClothingItemDetails(outfit.shirtId, "Shirts");
       if (clothingItem) items.push(clothingItem);
     }
 
     if (outfit.shoesId) {
-      const clothingItem = await getClothingItemDetails(
-        outfit.shoesId,
-        "Shoes"
-      );
+      const clothingItem = await getClothingItemDetails(outfit.shoesId, "Shoes");
       if (clothingItem) items.push(clothingItem);
     }
 
     if (outfit.shortsId) {
-      const clothingItem = await getClothingItemDetails(
-        outfit.shortsId,
-        "Shorts"
-      );
+      const clothingItem = await getClothingItemDetails(outfit.shortsId, "Shorts");
       if (clothingItem) items.push(clothingItem);
     }
 
     setClothingItemsArray((prevItems) => [...prevItems, items]);
   };
 
+  const handleDeleteOutfit = async (outfitId: string) => {
+    try {
+      const outfitRef = doc(collection(FIRESTORE_DB, "Outfits"), outfitId);
+      await deleteDoc(outfitRef);
+
+      setOutfits((prevOutfits) => prevOutfits.filter((outfit) => outfitId !== outfit.userId));
+      setClothingItemsArray([]);
+    } catch (error) {
+      console.error("Error deleting outfit:", error);
+    }
+  };
+
   const getOutfitsFromFirestore = async () => {
     try {
-      // Create a reference to the 'Shirts' collection and query by user ID
       const outfitsCollectionRef = collection(FIRESTORE_DB, "Outfits");
       const q = query(outfitsCollectionRef, where("userId", "==", userID));
-
-      // Get the documents that match the query
       const querySnapshot = await getDocs(q);
 
       const outfitsData: Outfit[] = [];
-
       querySnapshot.forEach((doc) => {
-        // Push the data of each shirt into the shirtsData array
         outfitsData.push(doc.data() as Outfit);
-        console.log(doc.data().picture as Outfit);
       });
-
-      console.log("Outfits Data:", outfitsData);
 
       setOutfits(outfitsData);
     } catch (error) {
-      console.error("Error fetching shirts:", error);
+      console.error("Error fetching outfits:", error);
     }
   };
 
   useEffect(() => {
-    // Get the shirts when the component mounts
     getOutfitsFromFirestore();
   }, []);
 
   useEffect(() => {
-    // Fetch data for each outfit
     outfits.forEach((outfit) => {
       fetchClothingItemsForOutfit(outfit);
     });
@@ -159,6 +138,9 @@ const Outfits = () => {
               )}
               horizontal
             />
+            <TouchableOpacity onPress={() => handleDeleteOutfit(outfits[index]?.userId)}>
+              <Text>Delete</Text>
+            </TouchableOpacity>
           </View>
         ))}
       </ScrollView>
@@ -176,7 +158,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   itemContainer: {
-    height: 200,
+    height: 250,
     backgroundColor: "black",
     borderRadius: 5,
     marginBottom: 10,
