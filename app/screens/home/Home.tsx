@@ -5,6 +5,8 @@ import {
   StyleSheet,
   Image,
   ScrollView,
+  SafeAreaView,
+  TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
 import { NavigationContainer, NavigationProp } from "@react-navigation/native";
@@ -788,8 +790,9 @@ const Home = ({ navigation }: RouterProps) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.weatherContainer}>
+        <Text style={styles.weatherText}>Todays Weather</Text>
         <WeatherComponent></WeatherComponent>
       </View>
       {outfit && (
@@ -936,18 +939,25 @@ const Home = ({ navigation }: RouterProps) => {
           />
         </View>
 
-        <Button onPress={generateRandomOutfit} title="Generate Outfit" />
+        <TouchableOpacity
+          onPress={generateRandomOutfit}
+          style={styles.generateButton}
+        >
+          <Text>Generate Outfit</Text>
+        </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "black",
+    backgroundColor: "#F5E2B8",
     alignItems: "center",
-    justifyContent: "center",
+
+    justifyContent: "flex-start",
+    flexDirection: "column",
   },
 
   errorMessage: {
@@ -981,7 +991,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "50%",
     justifyContent: "center",
-    marginTop: 60,
   },
 
   clothingItemContainer: {
@@ -1012,10 +1021,36 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   weatherContainer: {
-    backgroundColor: "white",
-    marginBottom: 50,
-    width: 500,
-    height: 300,
+    backgroundColor: "#FAF9F6",
+    marginBottom: 100,
+    width: "90%",
+    height: "8%",
+    marginLeft: 20,
+    marginRight: 20,
+    marginTop: 20,
+    borderRadius: 15,
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  generateButton: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    paddingVertical: 6,
+    paddingHorizontal: 14,
+    borderRadius: 6,
+    backgroundColor: "#fff",
+    borderColor: "transparent", // No border
+    borderWidth: 0, // No border
+    boxShadow: "0px 0.5px 1px rgba(0, 0, 0, 0.1)", // Not supported, use elevation for shadows
+    elevation: 2, // For Android shadow
+    userSelect: "none",
+    touchAction: "manipulation",
+  },
+  weatherText: {
+    fontSize: 30,
+    marginLeft: 10,
   },
 });
 
