@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   ScrollView,
   Image,
+  TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import * as Location from "expo-location";
@@ -18,6 +19,9 @@ interface ForecastData {
     }[];
     temp: number;
   };
+  daily: {
+    summary: string;
+  }[];
 }
 
 const openWeatherKey = "4e4c2d8cf82b7c8cdb4c743f9cdcdcd3";
@@ -73,6 +77,15 @@ const WeatherComponent = () => {
             }}
           />
           <Text>{Math.round(forecast.current.temp)}°F</Text>
+          <TouchableOpacity>
+            <Text
+              onPress={() => {
+                console.log(forecast.daily);
+                const dailySummary = forecast?.daily[0].summary;
+                console.log(dailySummary);
+              }}
+            ></Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
