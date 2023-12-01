@@ -83,7 +83,7 @@ const Camera = () => {
       </TouchableOpacity>
       <View style={styles.pickerContainer}>
         <RNPickerSelect
-          placeholder={{ label: "Select Clothing Category", value: "" }}
+          placeholder={{ label: "Select Clothing Type", value: "" }}
           onValueChange={(value) => setCategory(value)}
           items={[
             { label: "Shirts", value: "Shirts" },
@@ -97,12 +97,16 @@ const Camera = () => {
       </View>
       <View style={styles.pickerContainer}>
         <RNPickerSelect
-          placeholder={{ label: "Select Clothing Attire" }}
+          placeholder={{ label: "Select Clothing Style" }}
           onValueChange={(value) => setAttire(value)}
           items={[
             { label: "Casual", value: "Casual" },
-            { label: "Formal", value: "Formal" },
-            { label: "Athletic", value: "Athletic" },
+            { label: "Formal/Elegant", value: "Formal/Elegant" },
+            { label: "Sporty", value: "Sporty" },
+            { label: "Streetwear", value: "Streetwear" },
+            { label: "Retro", value: "Retro" },
+            { label: "Waterproof", value: "Waterproof" },
+            { label: "Snowwear", value: "Snowwear" },
           ]}
         />
       </View>
@@ -119,6 +123,7 @@ const Camera = () => {
             { label: "White", value: "White" },
             { label: "Black", value: "Black" },
             { label: "Grey", value: "Grey" },
+            { label: "Brown", value: "Brown" },
           ]}
         />
       </View>
