@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   tabBar: {
-    backgroundColor: "black",
+    backgroundColor: "#423E37",
     height: 80,
   },
 });

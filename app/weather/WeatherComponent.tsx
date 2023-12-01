@@ -93,7 +93,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
   },
   largeIcon: {
-    width: 300,
-    height: 250,
+    width: 50,
+    height: 50,
   },
 });
