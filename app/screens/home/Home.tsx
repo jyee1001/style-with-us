@@ -1,4 +1,11 @@
-import { View, Text, Button, StyleSheet, Image, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  Button,
+  StyleSheet,
+  Image,
+  ScrollView,
+} from "react-native";
 import React, { useState } from "react";
 import { NavigationContainer, NavigationProp } from "@react-navigation/native";
 import { FIREBASE_AUTH } from "../../../FirebaseConfig";
@@ -20,8 +27,15 @@ import {
   getDocs,
 } from "firebase/firestore";
 import RNPickerSelect from "react-native-picker-select";
+import WeatherComponent from "../weather/WeatherComponent";
 
-type ClothingType = "Hats" | "Jackets" | "Shirts" | "Pants" | "Shorts" | "Shoes";
+type ClothingType =
+  | "Hats"
+  | "Jackets"
+  | "Shirts"
+  | "Pants"
+  | "Shorts"
+  | "Shoes";
 type ClothingStyle = "Formal" | "Casual" | "Athletic";
 type Weather = "Hot" | "Cold";
 
@@ -56,26 +70,25 @@ const Home = ({ navigation }: RouterProps) => {
     attire: ClothingStyle
   ) => {
     try {
-        const clothesRef = collection(FIRESTORE_DB, type);
-        const q = query(
-          clothesRef,
-          where("attire", "==", attire),
-          where("userUid", "==", getAuth().currentUser?.uid)
-        );
-        const querySnapshot = await getDocs(q);
-        const items: ClothingItem[] = [];
-        querySnapshot.forEach((doc) => {
-          items.push({ id: doc.id, ...doc.data() } as ClothingItem);
-        });
-  
-        const randomItem = items[Math.floor(Math.random() * items.length)];
-        return randomItem;
+      const clothesRef = collection(FIRESTORE_DB, type);
+      const q = query(
+        clothesRef,
+        where("attire", "==", attire),
+        where("userUid", "==", getAuth().currentUser?.uid)
+      );
+      const querySnapshot = await getDocs(q);
+      const items: ClothingItem[] = [];
+      querySnapshot.forEach((doc) => {
+        items.push({ id: doc.id, ...doc.data() } as ClothingItem);
+      });
+
+      const randomItem = items[Math.floor(Math.random() * items.length)];
+      return randomItem;
     } catch (error) {
       console.error("Error fetching clothing item: ", error);
       return null;
     }
   };
-  
 
   const generateRandomOutfit = async () => {
     let theHat = null;
@@ -92,7 +105,9 @@ const Home = ({ navigation }: RouterProps) => {
         thePants = await getRandomClothingItem("Pants", "Casual");
 
         if (!theShirt || !theShoes || !theHat || !thePants || !theShorts) {
-          setErrorMessage("You must have at least one hat, shirt, pants, shorts, and shoes to generate a Casual outfit for Hot weather.");
+          setErrorMessage(
+            "You must have at least one hat, shirt, pants, shorts, and shoes to generate a Casual outfit for Hot weather."
+          );
           return;
         }
         if (Math.random() < 0.5) {
@@ -106,7 +121,9 @@ const Home = ({ navigation }: RouterProps) => {
         thePants = await getRandomClothingItem("Pants", "Casual");
 
         if (!theShirt || !theShoes || !theJacket || !thePants) {
-          setErrorMessage("You must have at least one jacket, shirt, pants, and shoes to generate a Casual outfit for Cold weather.");
+          setErrorMessage(
+            "You must have at least one jacket, shirt, pants, and shoes to generate a Casual outfit for Cold weather."
+          );
           return;
         }
       }
@@ -117,7 +134,9 @@ const Home = ({ navigation }: RouterProps) => {
         thePants = await getRandomClothingItem("Pants", "Formal");
 
         if (!theShirt || !theShoes || !thePants) {
-          setErrorMessage("You must have at least one shirt, pants, and shoes to generate a Formal outfit for Hot weather.");
+          setErrorMessage(
+            "You must have at least one shirt, pants, and shoes to generate a Formal outfit for Hot weather."
+          );
           return;
         }
       }
@@ -126,7 +145,9 @@ const Home = ({ navigation }: RouterProps) => {
         thePants = await getRandomClothingItem("Pants", "Formal");
 
         if (!theShirt || !theShoes || !theJacket || !thePants) {
-          setErrorMessage("You must have at least one jacket, shirt, pants, and shoes to generate a Formal outfit for Cold weather.");
+          setErrorMessage(
+            "You must have at least one jacket, shirt, pants, and shoes to generate a Formal outfit for Cold weather."
+          );
           return;
         }
       }
@@ -138,7 +159,9 @@ const Home = ({ navigation }: RouterProps) => {
         thePants = await getRandomClothingItem("Pants", "Athletic");
 
         if (!theShirt || !theShoes || !thePants || !theShorts) {
-          setErrorMessage("You must have at least one shirt, pants, shorts, and shoes to generate an Athletic outfit for Hot weather.");
+          setErrorMessage(
+            "You must have at least one shirt, pants, shorts, and shoes to generate an Athletic outfit for Hot weather."
+          );
           return;
         }
         if (Math.random() < 0.5) {
@@ -152,14 +175,23 @@ const Home = ({ navigation }: RouterProps) => {
         thePants = await getRandomClothingItem("Pants", "Athletic");
 
         if (!theShirt || !theShoes || !theJacket || !thePants) {
-          setErrorMessage("You must have at least one jacket, shirt, pants, and shoes to generate an Athletic outfit for Cold weather.");
+          setErrorMessage(
+            "You must have at least one jacket, shirt, pants, and shoes to generate an Athletic outfit for Cold weather."
+          );
           return;
         }
       }
     }
 
     setErrorMessage(null);
-    setOutfit({ hat: theHat, jacket: theJacket, shirt: theShirt, pants: thePants, shorts: theShorts, shoes: theShoes });
+    setOutfit({
+      hat: theHat,
+      jacket: theJacket,
+      shirt: theShirt,
+      pants: thePants,
+      shorts: theShorts,
+      shoes: theShoes,
+    });
 
     /*
     let hat = null;
@@ -228,7 +260,8 @@ const Home = ({ navigation }: RouterProps) => {
           jacketId: outfit.jacket?.id || null,
           shirtId: outfit.shirt?.id || null,
           pantsId: outfit.pants?.category === "Pants" ? outfit.pants?.id : null,
-          shortsId: outfit.shorts?.category === "Shorts" ? outfit.shorts?.id : null,
+          shortsId:
+            outfit.shorts?.category === "Shorts" ? outfit.shorts?.id : null,
           shoesId: outfit.shoes?.id || null,
           style: outfitStyle,
           userId: getAuth().currentUser?.uid,
@@ -243,113 +276,132 @@ const Home = ({ navigation }: RouterProps) => {
   };
 
   return (
-      <View style={styles.container}>
-
-        {outfit && (
-          <View style={(styles.outfitContainer)}>
-
-            {outfit.hat && (
-              <View style={styles.clothingItemContainer}>
-                <View style={styles.imageContainer}>
-                  <Image source={{ uri: outfit.hat?.picture }} style={styles.image} />
-                </View>
-                <View style={styles.descriptionContainer}>
-                  <Text style={styles.outfitText}>
-                    {outfit.hat?.color} {outfit.hat ? "Hat" : ""}
-                  </Text>
-                </View>
-              </View>
-            )}
-
-            {outfit.jacket && (
-              <View style={styles.clothingItemContainer}>
-                <View style={styles.imageContainer}>
-                  <Image source={{ uri: outfit.jacket?.picture }} style={styles.image} />
-                </View>
-                <View style={styles.descriptionContainer}>
-                  <Text style={styles.outfitText}>
-                    {outfit.jacket?.color} {outfit.jacket ? "Jacket" : ""}
-                  </Text>
-                </View>
-              </View>
-            )}
-
-            {outfit.shirt && (
-              <View style={styles.clothingItemContainer}>
-                <View style={styles.imageContainer}>
-                  <Image source={{ uri: outfit.shirt?.picture }} style={styles.image} />
-                </View>
-                <View style={styles.descriptionContainer}>
-                  <Text style={styles.outfitText}>
-                    {outfit.shirt?.color} {outfit.shirt ? "Shirt" : ""}
-                  </Text>
-                </View>
-              </View>
-            )}
-
-            {(outfit.pants || outfit.shorts) && (
-              <View style={styles.clothingItemContainer}>
-                <View style={styles.imageContainer}>
-                  <Image source={{ uri: outfit.pants?.picture || outfit.shorts?.picture }} style={styles.image} />
-                </View>
-                <View style={styles.descriptionContainer}>
-                  <Text style={styles.outfitText}>
-                    {outfit.pants?.color || outfit.shorts?.color} {outfit.pants ? "Pants" : "Shorts"}
-                  </Text>
-                </View>
-              </View>
-            )}
-
-            {outfit.shoes && (
-              <View style={styles.clothingItemContainer}>
-                <View style={styles.imageContainer}>
-                  <Image source={{ uri: outfit.shoes?.picture }} style={styles.image} />
-                </View>
-                <View style={styles.descriptionContainer}>
-                  <Text style={styles.outfitText}>
-                    {outfit.shoes?.color} {outfit.shoes ? "Shoes" : ""}
-                  </Text>
-                </View>
-              </View>
-            )}
-
-            <Button onPress={saveOutfit} title="Save Outfit" />
-          </View>
-        )}
-
-        {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
-
-        <View style={styles.homeAdjusts}>
-          <View style={styles.pickerContainer}>
-            <RNPickerSelect
-              placeholder={{ label: "Select Outfit Style", value: "" }}
-              onValueChange={(value) => setOutfitStyle(value)}
-              items={[
-                { label: "Formal", value: "Formal" },
-                { label: "Casual", value: "Casual" },
-                { label: "Athletic", value: "Athletic" },
-              ]}
-            />
-          </View>
-          <View style={styles.pickerContainer}>
-            <RNPickerSelect
-              placeholder={{ label: "Select Weather", value: "" }}
-              onValueChange={(value) => setWeather(value)}
-              items={[
-                { label: "Hot", value: "Hot" },
-                { label: "Cold", value: "Cold" },
-              ]}
-            />
-          </View>
-          
-          <Button onPress={generateRandomOutfit} title="Generate Outfit" />
-          <Button
-            onPress={() => console.log(getAuth().currentUser?.uid)}
-            title="open page"
-          />
-          <Button onPress={() => FIREBASE_AUTH.signOut()} title="Sign Out" />
-        </View>
+    <View style={styles.container}>
+      <View style={styles.topContainer}>
+        <WeatherComponent></WeatherComponent>
       </View>
+      {outfit && (
+        <View style={styles.outfitContainer}>
+          {outfit.hat && (
+            <View style={styles.clothingItemContainer}>
+              <View style={styles.imageContainer}>
+                <Image
+                  source={{ uri: outfit.hat?.picture }}
+                  style={styles.image}
+                />
+              </View>
+              <View style={styles.descriptionContainer}>
+                <Text style={styles.outfitText}>
+                  {outfit.hat?.color} {outfit.hat ? "Hat" : ""}
+                </Text>
+              </View>
+            </View>
+          )}
+
+          {outfit.jacket && (
+            <View style={styles.clothingItemContainer}>
+              <View style={styles.imageContainer}>
+                <Image
+                  source={{ uri: outfit.jacket?.picture }}
+                  style={styles.image}
+                />
+              </View>
+              <View style={styles.descriptionContainer}>
+                <Text style={styles.outfitText}>
+                  {outfit.jacket?.color} {outfit.jacket ? "Jacket" : ""}
+                </Text>
+              </View>
+            </View>
+          )}
+
+          {outfit.shirt && (
+            <View style={styles.clothingItemContainer}>
+              <View style={styles.imageContainer}>
+                <Image
+                  source={{ uri: outfit.shirt?.picture }}
+                  style={styles.image}
+                />
+              </View>
+              <View style={styles.descriptionContainer}>
+                <Text style={styles.outfitText}>
+                  {outfit.shirt?.color} {outfit.shirt ? "Shirt" : ""}
+                </Text>
+              </View>
+            </View>
+          )}
+
+          {(outfit.pants || outfit.shorts) && (
+            <View style={styles.clothingItemContainer}>
+              <View style={styles.imageContainer}>
+                <Image
+                  source={{
+                    uri: outfit.pants?.picture || outfit.shorts?.picture,
+                  }}
+                  style={styles.image}
+                />
+              </View>
+              <View style={styles.descriptionContainer}>
+                <Text style={styles.outfitText}>
+                  {outfit.pants?.color || outfit.shorts?.color}{" "}
+                  {outfit.pants ? "Pants" : "Shorts"}
+                </Text>
+              </View>
+            </View>
+          )}
+
+          {outfit.shoes && (
+            <View style={styles.clothingItemContainer}>
+              <View style={styles.imageContainer}>
+                <Image
+                  source={{ uri: outfit.shoes?.picture }}
+                  style={styles.image}
+                />
+              </View>
+              <View style={styles.descriptionContainer}>
+                <Text style={styles.outfitText}>
+                  {outfit.shoes?.color} {outfit.shoes ? "Shoes" : ""}
+                </Text>
+              </View>
+            </View>
+          )}
+
+          <Button onPress={saveOutfit} title="Save Outfit" />
+        </View>
+      )}
+
+      {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
+
+      <View style={styles.homeAdjusts}>
+        <View style={styles.pickerContainer}>
+          <RNPickerSelect
+            placeholder={{ label: "Select Outfit Style", value: "" }}
+            onValueChange={(value) => setOutfitStyle(value)}
+            items={[
+              { label: "Formal", value: "Formal" },
+              { label: "Casual", value: "Casual" },
+              { label: "Athletic", value: "Athletic" },
+            ]}
+          />
+        </View>
+        <View style={styles.pickerContainer}>
+          <RNPickerSelect
+            placeholder={{ label: "Select Weather", value: "" }}
+            onValueChange={(value) => setWeather(value)}
+            items={[
+              { label: "Hot", value: "Hot" },
+              { label: "Cold", value: "Cold" },
+            ]}
+          />
+        </View>
+
+        <Button onPress={generateRandomOutfit} title="Generate Outfit" />
+        <Button
+          onPress={() => console.log(getAuth().currentUser?.uid)}
+          title="open page"
+        />
+        <Button onPress={() => FIREBASE_AUTH.signOut()} title="Sign Out" />
+      </View>
+    </View>
   );
 };
 
@@ -358,7 +410,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "black",
     alignItems: "center",
-    justifyContent: "center",
   },
 
   errorMessage: {
@@ -416,6 +467,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 10,
   },
+  topContainer: { marginTop: 100 },
 });
 
 export default Home;
