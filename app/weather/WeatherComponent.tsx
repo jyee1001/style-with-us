@@ -16,11 +16,11 @@ interface ForecastData {
     weather: {
       icon: string; // Add other properties as needed
     }[];
+    temp: number;
   };
 }
 
 const openWeatherKey = "4e4c2d8cf82b7c8cdb4c743f9cdcdcd3";
-let url = `https://api.openweathermap.org/data/3.0/onecall?&units=metric&exclude=minutely&appid=${openWeatherKey}`;
 
 const WeatherComponent = () => {
   const [forecast, setForecast] = useState<ForecastData | null>(null);
@@ -38,9 +38,9 @@ const WeatherComponent = () => {
     console.log(location.coords.latitude);
     console.log(location.coords.longitude);
 
-    const response = await fetch(
-      `${url}&lat=${location.coords.latitude}&lon=${location.coords.longitude}`
-    );
+    let url = `https://api.openweathermap.org/data/2.5/onecall?lat=${location.coords.latitude}&lon=${location.coords.longitude}&units=imperial&exclude=minutely&appid=${openWeatherKey}`;
+
+    const response = await fetch(url);
     const data = await response.json(); //converts the response to a json
     if (!response.ok) {
       Alert.alert("Error", "Something went wrong");
@@ -69,9 +69,10 @@ const WeatherComponent = () => {
           <Image
             style={styles.largeIcon}
             source={{
-              uri: `http://openweathermap.org/img/wn/${current.icon}@4x.png`,
+              uri: `http://openweathermap.org/img/wn/${current.icon}@2x.png`,
             }}
           />
+          <Text>{Math.round(forecast.current.temp)}°F</Text>
         </View>
       </ScrollView>
     </SafeAreaView>

@@ -27,6 +27,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 import RNPickerSelect from "react-native-picker-select";
+import WeatherComponent from "../../weather/WeatherComponent";
 
 type ClothingType =
   | "Hats"
@@ -788,6 +789,9 @@ const Home = ({ navigation }: RouterProps) => {
 
   return (
     <View style={styles.container}>
+      <View style={styles.weatherContainer}>
+        <WeatherComponent></WeatherComponent>
+      </View>
       {outfit && (
         <View style={styles.outfitContainer}>
           {outfit.hat && (
@@ -1006,6 +1010,12 @@ const styles = StyleSheet.create({
     color: "white",
     fontSize: 16,
     marginBottom: 10,
+  },
+  weatherContainer: {
+    backgroundColor: "white",
+    marginBottom: 50,
+    width: 500,
+    height: 300,
   },
 });
 
