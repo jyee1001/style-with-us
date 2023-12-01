@@ -1,7 +1,7 @@
-import { View, Text, Image, StyleSheet, FlatList } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { collection, query, where, getDocs, doc, deleteDoc } from "firebase/firestore";
 
 import { FIRESTORE_DB } from "../../../FirebaseConfig";
 import GridView from "../GridView";
@@ -23,19 +23,13 @@ const Shirts = () => {
 
   const getShirtsFromFirestore = async () => {
     try {
-      // Create a reference to the 'Shirts' collection and query by user ID
       const shirtsCollectionRef = collection(FIRESTORE_DB, "Shirts");
       const q = query(shirtsCollectionRef, where("userUid", "==", userID));
-
-      // Get the documents that match the query
       const querySnapshot = await getDocs(q);
 
       const shirtsData: Shirt[] = [];
-
       querySnapshot.forEach((doc) => {
-        // Push the data of each shirt into the shirtsData array
-        shirtsData.push(doc.data() as Shirt);
-        console.log(doc.data().picture as Shirt);
+        shirtsData.push({ id: doc.id, ...doc.data() } as Shirt);
       });
 
       setShirts(shirtsData);
@@ -44,8 +38,18 @@ const Shirts = () => {
     }
   };
 
+  const handleDeleteShirt = async (shirtId: string) => {
+    try {
+      const shirtRef = doc(collection(FIRESTORE_DB, "Shirts"), shirtId);
+      await deleteDoc(shirtRef);
+
+      setShirts((prevShirts) => prevShirts.filter((shirt) => shirt.id !== shirtId));
+    } catch (error) {
+      console.error("Error deleting shirt:", error);
+    }
+  };
+
   useEffect(() => {
-    // Get the shirts when the component mounts
     getShirtsFromFirestore();
   }, []);
 
@@ -56,10 +60,12 @@ const Shirts = () => {
         renderItem={(item) => (
           <View style={styles.itemContainer}>
             <Image source={{ uri: item.picture }} style={styles.image} />
-            {/* Render other shirt details */}
+            <TouchableOpacity onPress={() => handleDeleteShirt(item.id)}>
+              <Text>Delete</Text>
+            </TouchableOpacity>
           </View>
         )}
-      ></GridView>
+      />
     </SafeAreaView>
   );
 };

@@ -1,7 +1,7 @@
-import { View, Text, Image, StyleSheet, FlatList } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { collection, query, where, getDocs, doc, deleteDoc } from "firebase/firestore";
 
 import { FIRESTORE_DB } from "../../../FirebaseConfig";
 import GridView from "../GridView";
@@ -23,29 +23,33 @@ const Jackets = () => {
 
   const getJacketsFromFirestore = async () => {
     try {
-      // Create a reference to the 'Shirts' collection and query by user ID
       const jacketsCollectionRef = collection(FIRESTORE_DB, "Jackets");
       const q = query(jacketsCollectionRef, where("userUid", "==", userID));
-
-      // Get the documents that match the query
       const querySnapshot = await getDocs(q);
 
       const jacketsData: Jacket[] = [];
-
       querySnapshot.forEach((doc) => {
-        // Push the data of each shirt into the shirtsData array
-        jacketsData.push(doc.data() as Jacket);
-        console.log(doc.data().picture as Jacket);
+        jacketsData.push({ id: doc.id, ...doc.data() } as Jacket);
       });
 
       setJackets(jacketsData);
     } catch (error) {
-      console.error("Error fetching shirts:", error);
+      console.error("Error fetching jackets:", error);
+    }
+  };
+
+  const handleDeleteJacket = async (jacketId: string) => {
+    try {
+      const jacketRef = doc(collection(FIRESTORE_DB, "Jackets"), jacketId);
+      await deleteDoc(jacketRef);
+
+      setJackets((prevJackets) => prevJackets.filter((jacket) => jacket.id !== jacketId));
+    } catch (error) {
+      console.error("Error deleting jacket:", error);
     }
   };
 
   useEffect(() => {
-    // Get the shirts when the component mounts
     getJacketsFromFirestore();
   }, []);
 
@@ -56,10 +60,12 @@ const Jackets = () => {
         renderItem={(item) => (
           <View style={styles.itemContainer}>
             <Image source={{ uri: item.picture }} style={styles.image} />
-            {/* Render other shirt details */}
+            <TouchableOpacity onPress={() => handleDeleteJacket(item.id)}>
+              <Text>Delete</Text>
+            </TouchableOpacity>
           </View>
         )}
-      ></GridView>
+      />
     </SafeAreaView>
   );
 };

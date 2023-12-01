@@ -1,14 +1,7 @@
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  FlatList,
-  SafeAreaView,
-} from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView } from "react-native";
 import React, { useEffect, useState } from "react";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { collection, query, where, getDocs } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
+import { collection, query, where, getDocs, doc, deleteDoc } from "firebase/firestore";
 
 import { FIRESTORE_DB } from "../../../FirebaseConfig";
 import GridView from "../GridView";
@@ -22,36 +15,43 @@ interface Shoe {
   description: string;
   // Add other fields as needed
 }
+
 const Shoes = () => {
   const userID = getAuth().currentUser?.uid;
   const [shoes, setShoes] = useState<Shoe[]>([]);
 
   const getShoesFromFirestore = async () => {
     try {
-      // Create a reference to the 'Shorts' collection and query by user ID
       const shoesCollectionRef = collection(FIRESTORE_DB, "Shoes");
       const q = query(shoesCollectionRef, where("userUid", "==", userID));
-
-      // Get the documents that match the query
       const querySnapshot = await getDocs(q);
 
       const shoesData: Shoe[] = [];
-
       querySnapshot.forEach((doc) => {
-        // Push the data of each shirt into the shirtsData array
-        shoesData.push(doc.data() as Shoe);
-        console.log(doc.data().picture as Shoe);
+        shoesData.push({ id: doc.id, ...doc.data() } as Shoe);
       });
 
       setShoes(shoesData);
     } catch (error) {
-      console.error("Error fetching shorts:", error);
+      console.error("Error fetching shoes:", error);
+    }
+  };
+
+  const handleDeleteShoe = async (shoeId: string) => {
+    try {
+      const shoeRef = doc(collection(FIRESTORE_DB, "Shoes"), shoeId);
+      await deleteDoc(shoeRef);
+
+      setShoes((prevShoes) => prevShoes.filter((shoe) => shoe.id !== shoeId));
+    } catch (error) {
+      console.error("Error deleting shoe:", error);
     }
   };
 
   useEffect(() => {
     getShoesFromFirestore();
   }, []);
+
   return (
     <SafeAreaView>
       <GridView
@@ -59,10 +59,12 @@ const Shoes = () => {
         renderItem={(item) => (
           <View style={styles.itemContainer}>
             <Image source={{ uri: item.picture }} style={styles.image} />
-            {/* Render other shirt details */}
+            <TouchableOpacity onPress={() => handleDeleteShoe(item.id)}>
+              <Text>Delete</Text>
+            </TouchableOpacity>
           </View>
         )}
-      ></GridView>
+      />
     </SafeAreaView>
   );
 };
@@ -84,6 +86,6 @@ const styles = StyleSheet.create({
     width: 200,
     height: 100,
     flex: 1,
-    aspectRatio: 1,
+    aspectRatio: 2, // Adjusted aspectRatio for better display of shoe images
   },
 });
