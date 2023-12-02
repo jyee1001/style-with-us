@@ -53,11 +53,18 @@ const Planner: React.FC<PlannerProps> = ({ navigation }) => {
       const selectedDate = day.dateString;
       const userID = getAuth().currentUser?.uid;
 
-      const plannerDatesCollectionRef = collection(FIRESTORE_DB, "PlannerDates");
-      const q = query(plannerDatesCollectionRef, where('date', '==', selectedDate), where("userUid", "==", userID));
+      const plannerDatesCollectionRef = collection(
+        FIRESTORE_DB,
+        "PlannerDates"
+      );
+      const q = query(
+        plannerDatesCollectionRef,
+        where("date", "==", selectedDate),
+        where("userUid", "==", userID)
+      );
       const querySnapshot = await getDocs(q);
 
-      let outfitId = '';
+      let outfitId = "";
 
       querySnapshot.forEach((doc) => {
         const data = doc.data();
@@ -70,9 +77,14 @@ const Planner: React.FC<PlannerProps> = ({ navigation }) => {
           setTheOutfitId(outfitId);
 
           const outfitData = outfitDoc.data() as Outfit;
-          const fetchItemUrl = async (itemId: string, collectionName: string): Promise<string | null> => {
+          const fetchItemUrl = async (
+            itemId: string,
+            collectionName: string
+          ): Promise<string | null> => {
             if (itemId) {
-              const itemDoc = await getDoc(doc(FIRESTORE_DB, collectionName, itemId));
+              const itemDoc = await getDoc(
+                doc(FIRESTORE_DB, collectionName, itemId)
+              );
               if (itemDoc.exists()) {
                 return itemDoc.data()?.picture || null;
               } else {
@@ -82,7 +94,7 @@ const Planner: React.FC<PlannerProps> = ({ navigation }) => {
               return null; // Item ID is null, handle accordingly
             }
           };
-  
+
           const hatUrl = await fetchItemUrl(outfitData.hatId, "Hats");
           const jacketUrl = await fetchItemUrl(outfitData.jacketId, "Jackets");
           const shirtUrl = await fetchItemUrl(outfitData.shirtId, "Shirts");
@@ -100,8 +112,8 @@ const Planner: React.FC<PlannerProps> = ({ navigation }) => {
           });
         }
       } else {
-      setTheOutfitId(null);
-      setOutfitUrls(null);
+        setTheOutfitId(null);
+        setOutfitUrls(null);
       }
       setDate(selectedDate);
     } catch (error) {
@@ -110,22 +122,29 @@ const Planner: React.FC<PlannerProps> = ({ navigation }) => {
   };
 
   const handleDeleteOutfit = async () => {
-      if (theOutfitId) {
-        const userID = getAuth().currentUser?.uid;
-        const plannerDatesCollectionRef = collection(FIRESTORE_DB, "PlannerDates");
-        const q = query(plannerDatesCollectionRef, where('date', '==', date), where('userUid', '==', userID));
-        const querySnapshot = await getDocs(q);
-        querySnapshot.forEach(async (doc) => {
-          try {
-            await deleteDoc(doc.ref);
-            setTheOutfitId(null);
-            setOutfitUrls(null);
-            //setDate("");
-          } catch (error) {
-            console.error("Error deleting PlannerDates document:", error);
-          }
-        });
-      }
+    if (theOutfitId) {
+      const userID = getAuth().currentUser?.uid;
+      const plannerDatesCollectionRef = collection(
+        FIRESTORE_DB,
+        "PlannerDates"
+      );
+      const q = query(
+        plannerDatesCollectionRef,
+        where("date", "==", date),
+        where("userUid", "==", userID)
+      );
+      const querySnapshot = await getDocs(q);
+      querySnapshot.forEach(async (doc) => {
+        try {
+          await deleteDoc(doc.ref);
+          setTheOutfitId(null);
+          setOutfitUrls(null);
+          //setDate("");
+        } catch (error) {
+          console.error("Error deleting PlannerDates document:", error);
+        }
+      });
+    }
   };
 
   const navigateToChooseOutfitScreen = () => {
@@ -137,15 +156,15 @@ const Planner: React.FC<PlannerProps> = ({ navigation }) => {
   };
 
   return (
-    <View style = {styles.container}>
-      <View style = {styles.calendarContainer}>
+    <View style={styles.container}>
+      <View style={styles.calendarContainer}>
         <Calendar
           style={{
             width: 400,
-            height: 300
+            height: 300,
           }}
-          current = {new Date().toISOString().split("T")[0]}
-          onDayPress = {dateSelect}
+          current={new Date().toISOString().split("T")[0]}
+          onDayPress={dateSelect}
           markedDates={markedDates}
         />
       </View>
@@ -153,19 +172,52 @@ const Planner: React.FC<PlannerProps> = ({ navigation }) => {
         <View style={styles.dateContainer}>
           <Text>Selected Date: {date}</Text>
           <View style={styles.imageContainer}>
-            {outfitUrls?.hatUrl && <Image source={{ uri: outfitUrls.hatUrl }} style={styles.image} />}
-            {outfitUrls?.jacketUrl && <Image source={{ uri: outfitUrls.jacketUrl }} style={styles.image} />}
-            {outfitUrls?.shirtUrl && <Image source={{ uri: outfitUrls.shirtUrl }} style={styles.image} />}
-            {outfitUrls?.pantsUrl && <Image source={{ uri: outfitUrls.pantsUrl }} style={styles.image} />}
-            {outfitUrls?.shortsUrl && <Image source={{ uri: outfitUrls.shortsUrl }} style={styles.image} />}
-            {outfitUrls?.shoesUrl && <Image source={{ uri: outfitUrls.shoesUrl }} style={styles.image} />}
+            {outfitUrls?.hatUrl && (
+              <Image source={{ uri: outfitUrls.hatUrl }} style={styles.image} />
+            )}
+            {outfitUrls?.jacketUrl && (
+              <Image
+                source={{ uri: outfitUrls.jacketUrl }}
+                style={styles.image}
+              />
+            )}
+            {outfitUrls?.shirtUrl && (
+              <Image
+                source={{ uri: outfitUrls.shirtUrl }}
+                style={styles.image}
+              />
+            )}
+            {outfitUrls?.pantsUrl && (
+              <Image
+                source={{ uri: outfitUrls.pantsUrl }}
+                style={styles.image}
+              />
+            )}
+            {outfitUrls?.shortsUrl && (
+              <Image
+                source={{ uri: outfitUrls.shortsUrl }}
+                style={styles.image}
+              />
+            )}
+            {outfitUrls?.shoesUrl && (
+              <Image
+                source={{ uri: outfitUrls.shoesUrl }}
+                style={styles.image}
+              />
+            )}
           </View>
-          <Button title="Delete Outfit from Date" onPress={handleDeleteOutfit} />
+          <Button
+            title="Delete Outfit from Date"
+            onPress={handleDeleteOutfit}
+          />
         </View>
       ) : date !== "" ? (
         <View style={styles.dateContainer}>
           <Text>Selected Date: {date}</Text>
-          <Button title="Choose Outfit" onPress={navigateToChooseOutfitScreen} />
+          <Button
+            title="Choose Outfit"
+            onPress={navigateToChooseOutfitScreen}
+          />
         </View>
       ) : null}
     </View>
@@ -177,6 +229,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#36393e",
   },
   titleContainer: {
     marginBottom: 20,
