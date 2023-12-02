@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
   },
   largeIcon: {
-    width: 50,
-    height: 50,
+    width: 75,
+    height: 75,
   },
 });

@@ -7,9 +7,12 @@ import ChooseOutfitScreen from "../planner/ChooseOutfitScreen";
 const PlannerStack = createNativeStackNavigator();
 const PlannerNavigator = () => {
   return (
-    <PlannerStack.Navigator>
-        <PlannerStack.Screen name="Planner" component={Planner} />
-        <PlannerStack.Screen name="Choose Outfit" component={ChooseOutfitScreen} />
+    <PlannerStack.Navigator screenOptions={{ headerShown: false }}>
+      <PlannerStack.Screen name="Planner" component={Planner} />
+      <PlannerStack.Screen
+        name="Choose Outfit"
+        component={ChooseOutfitScreen}
+      />
     </PlannerStack.Navigator>
   );
 };

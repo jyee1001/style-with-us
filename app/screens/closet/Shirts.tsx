@@ -1,7 +1,14 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { getAuth } from "firebase/auth";
-import { collection, query, where, getDocs, doc, deleteDoc } from "firebase/firestore";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  doc,
+  deleteDoc,
+} from "firebase/firestore";
 
 import { FIRESTORE_DB } from "../../../FirebaseConfig";
 import GridView from "../GridView";
@@ -43,7 +50,9 @@ const Shirts = () => {
       const shirtRef = doc(collection(FIRESTORE_DB, "Shirts"), shirtId);
       await deleteDoc(shirtRef);
 
-      setShirts((prevShirts) => prevShirts.filter((shirt) => shirt.id !== shirtId));
+      setShirts((prevShirts) =>
+        prevShirts.filter((shirt) => shirt.id !== shirtId)
+      );
     } catch (error) {
       console.error("Error deleting shirt:", error);
     }
