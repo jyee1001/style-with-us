@@ -36,18 +36,36 @@ const Camera = () => {
     );
   }
 
-  const takePhoto = async () => {
-    const cameraResp = await ImagePicker.launchCameraAsync({
+  const selectFromGallery = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 1,
     });
 
-    if (!cameraResp.canceled) {
-      console.log(cameraResp.assets[0].uri);
-      setPicture(cameraResp.assets[0].uri);
+    if (!result.canceled) {
+      const pictureUri = 'uri' in result ? (result as { uri: string }).uri : '';
+      console.log(pictureUri);
+      setPicture(pictureUri);
     }
   };
+
+  const takeNewPhoto = async () => {
+    const result = await ImagePicker.launchCameraAsync({
+      allowsEditing: true,
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      const pictureUri = 'uri' in result ? (result as { uri: string }).uri : '';
+      console.log(pictureUri);
+      setPicture(pictureUri);
+    }
+  };
+
+
+
 
   const submitToFirestore = async () => {
     if (user && picture && category && attire) {
@@ -76,10 +94,13 @@ const Camera = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity style={styles.pictureButton} onPress={takePhoto}>
+      <TouchableOpacity style={styles.pictureButton} onPress={takeNewPhoto}>
         {picture ? (
           <Image source={{ uri: picture }} style={styles.image} />
         ) : null}
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.galleryButton} onPress={selectFromGallery}>
+        <Text>Select From Gallery</Text>
       </TouchableOpacity>
       <View style={styles.pickerContainer}>
         <RNPickerSelect
@@ -140,10 +161,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
     flex: 1,
-    // justifyContent: "center",
     alignItems: "center",
   },
-
   pictureButton: {
     marginLeft: 10,
     marginRight: 10,
@@ -154,8 +173,11 @@ const styles = StyleSheet.create({
     borderWidth: 5,
     borderColor: "black",
   },
+  galleryButton: {
+    backgroundColor: "grey",
+    marginTop: 30,
+  },
   pickerContainer: {
-    // paddingTop: 50,
     marginTop: 50,
     width: 350,
     borderWidth: 2,
@@ -169,8 +191,6 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   image: {
-    // width: 200,
-    // height: 200,
     flex: 1,
     width: "100%",
     length: "100%",
