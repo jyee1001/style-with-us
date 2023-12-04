@@ -33,6 +33,9 @@ const Closet: React.FC<RouterProps> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.titleContainer}>
+        <Text style={styles.screenTitle}>MY CLOSET</Text>
+      </View>
       <View style={styles.blankBox}></View>
 
       <GridView
@@ -138,6 +141,7 @@ const styles = StyleSheet.create({
   blankBox: {
     width: 20,
     height: 50,
+    marginBottom: 80,
     backgroundColor: "transparent",
   },
   outfitsButton: {
@@ -173,5 +177,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  screenTitle: { fontSize: 30, marginTop: 30, color: "#E5E5E5" },
+  screenTitle: {
+    fontSize: 30,
+    marginTop: 30,
+    color: "#E5E5E5",
+    fontWeight: "500",
+  },
 });
