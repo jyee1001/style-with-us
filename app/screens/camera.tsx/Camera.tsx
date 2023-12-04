@@ -97,7 +97,12 @@ const Camera = () => {
       <TouchableOpacity style={styles.pictureButton} onPress={takeNewPhoto}>
         {picture ? (
           <Image source={{ uri: picture }} style={styles.image} />
-        ) : null}
+        ) : (
+          <Image
+            source={{ uri: "https://i.ibb.co/5jyBVbv/camera.png" }}
+            style={styles.cameraIcon}
+          />
+        )}
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.galleryButton}
@@ -110,11 +115,11 @@ const Camera = () => {
           placeholder={{ label: " Select Clothing Type", value: "" }}
           onValueChange={(value) => setCategory(value)}
           items={[
-            { label: " Shirts", value: "Shirts" },
-            { label: " Shorts", value: "Shorts" },
-            { label: " Pants", value: "Pants" },
-            { label: " Jackets", value: "Jackets" },
             { label: " Hats", value: "Hats" },
+            { label: " Jackets", value: "Jackets" },
+            { label: " Shirts", value: "Shirts" },
+            { label: " Pants", value: "Pants" },
+            { label: " Shorts", value: "Shorts" },
             { label: " Shoes", value: "Shoes" },
           ]}
         />
@@ -175,6 +180,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#E5E5E5",
     borderWidth: 5,
     borderColor: "black",
+    alignItems: "center",
+    justifyContent: "center",
   },
   galleryButton: {
     width: 110,
@@ -224,5 +231,9 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "#E5E5E5",
+  },
+  cameraIcon: {
+    height: 50,
+    width: 50,
   },
 });
