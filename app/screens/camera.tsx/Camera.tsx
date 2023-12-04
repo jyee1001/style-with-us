@@ -44,7 +44,7 @@ const Camera = () => {
     });
 
     if (!result.canceled) {
-      const pictureUri = 'uri' in result ? (result as { uri: string }).uri : '';
+      const pictureUri = "uri" in result ? (result as { uri: string }).uri : "";
       console.log(pictureUri);
       setPicture(pictureUri);
     }
@@ -58,14 +58,11 @@ const Camera = () => {
     });
 
     if (!result.canceled) {
-      const pictureUri = 'uri' in result ? (result as { uri: string }).uri : '';
+      const pictureUri = "uri" in result ? (result as { uri: string }).uri : "";
       console.log(pictureUri);
       setPicture(pictureUri);
     }
   };
-
-
-
 
   const submitToFirestore = async () => {
     if (user && picture && category && attire) {
@@ -94,62 +91,68 @@ const Camera = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <View style={styles.titleContainer}>
+        <Text style={styles.screenTitle}>ADD CLOTHING</Text>
+      </View>
       <TouchableOpacity style={styles.pictureButton} onPress={takeNewPhoto}>
         {picture ? (
           <Image source={{ uri: picture }} style={styles.image} />
         ) : null}
       </TouchableOpacity>
-      <TouchableOpacity style={styles.galleryButton} onPress={selectFromGallery}>
-        <Text>Select From Gallery</Text>
+      <TouchableOpacity
+        style={styles.galleryButton}
+        onPress={selectFromGallery}
+      >
+        <Text style={styles.text}>Upload Photo</Text>
       </TouchableOpacity>
       <View style={styles.pickerContainer}>
         <RNPickerSelect
-          placeholder={{ label: "Select Clothing Type", value: "" }}
+          placeholder={{ label: " Select Clothing Type", value: "" }}
           onValueChange={(value) => setCategory(value)}
           items={[
-            { label: "Shirts", value: "Shirts" },
-            { label: "Shorts", value: "Shorts" },
-            { label: "Pants", value: "Pants" },
-            { label: "Jackets", value: "Jackets" },
-            { label: "Hats", value: "Hats" },
-            { label: "Shoes", value: "Shoes" },
+            { label: " Shirts", value: "Shirts" },
+            { label: " Shorts", value: "Shorts" },
+            { label: " Pants", value: "Pants" },
+            { label: " Jackets", value: "Jackets" },
+            { label: " Hats", value: "Hats" },
+            { label: " Shoes", value: "Shoes" },
           ]}
         />
       </View>
       <View style={styles.pickerContainer}>
         <RNPickerSelect
-          placeholder={{ label: "Select Clothing Style" }}
+          placeholder={{ label: " Select Clothing Style" }}
           onValueChange={(value) => setAttire(value)}
           items={[
-            { label: "Casual", value: "Casual" },
-            { label: "Formal/Elegant", value: "Formal/Elegant" },
-            { label: "Sporty", value: "Sporty" },
-            { label: "Streetwear", value: "Streetwear" },
-            { label: "Retro", value: "Retro" },
-            { label: "Waterproof", value: "Waterproof" },
-            { label: "Snowwear", value: "Snowwear" },
+            { label: " Casual", value: "Casual" },
+            { label: " Formal/Elegant", value: "Formal/Elegant" },
+            { label: " Sporty", value: "Sporty" },
+            { label: " Streetwear", value: "Streetwear" },
+            { label: " Retro", value: "Retro" },
+            { label: " Waterproof", value: "Waterproof" },
+            { label: " Snowwear", value: "Snowwear" },
           ]}
         />
       </View>
       <View style={styles.pickerContainer}>
         <RNPickerSelect
-          placeholder={{ label: "Select Main Color" }}
+          placeholder={{ label: " Select Main Color" }}
           onValueChange={(value) => setColor(value)}
           items={[
-            { label: "Blue", value: "Blue" },
-            { label: "Red", value: "Red" },
-            { label: "Green", value: "Green" },
-            { label: "Pink", value: "Pink" },
-            { label: "Yellow", value: "Yellow" },
-            { label: "White", value: "White" },
-            { label: "Black", value: "Black" },
-            { label: "Grey", value: "Grey" },
-            { label: "Brown", value: "Brown" },
+            { label: " Blue", value: "Blue" },
+            { label: " Red", value: "Red" },
+            { label: " Green", value: "Green" },
+            { label: " Pink", value: "Pink" },
+            { label: " Yellow", value: "Yellow" },
+            { label: " White", value: "White" },
+            { label: " Black", value: "Black" },
+            { label: " Grey", value: "Grey" },
+            { label: " Brown", value: "Brown" },
           ]}
         />
       </View>
       <TouchableOpacity style={styles.submitButton} onPress={submitToFirestore}>
-        <Text>Submit</Text>
+        <Text style={styles.text}>Submit</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -159,40 +162,67 @@ export default Camera;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#36393e",
+    backgroundColor: "#282b30",
     flex: 1,
     alignItems: "center",
   },
   pictureButton: {
     marginLeft: 10,
     marginRight: 10,
-    width: 300,
+    width: "100%",
     height: 300,
-    marginTop: 10,
-    backgroundColor: "#fff",
+    marginTop: 20,
+    backgroundColor: "#E5E5E5",
     borderWidth: 5,
     borderColor: "black",
   },
   galleryButton: {
-    backgroundColor: "grey",
-    marginTop: 30,
-  },
-  pickerContainer: {
-    marginTop: 50,
-    width: 350,
-    borderWidth: 2,
+    width: 110,
     height: 40,
+    borderRadius: 5,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FAF9F6",
+    backgroundColor: "#008080",
+    marginTop: 30,
+    marginBottom: 30,
+  },
+  pickerContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    width: 340,
+    height: 50,
+
+    color: "#E5E5E5",
+    fontSize: 16,
+    backgroundColor: "#424549",
+    borderRadius: 10,
+    marginTop: 10,
   },
   submitButton: {
-    backgroundColor: "grey",
+    width: 110,
+    height: 40,
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#008080",
     marginTop: 30,
   },
   image: {
     flex: 1,
     width: "100%",
     length: "100%",
+  },
+  titleContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  screenTitle: {
+    fontSize: 30,
+    marginTop: 30,
+    color: "#E5E5E5",
+    fontWeight: "500",
+  },
+  text: {
+    color: "#E5E5E5",
   },
 });
