@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Button, Image } from "react-native";
+import { View, Text, StyleSheet, Button, Image, TouchableOpacity, } from "react-native";
 import React, { useState } from "react";
 import { Calendar } from "react-native-calendars";
 import { NavigationProp } from "@react-navigation/native";
@@ -47,10 +47,13 @@ const Planner: React.FC<PlannerProps> = ({ navigation }) => {
   const [date, setDate] = useState("");
   const [outfitUrls, setOutfitUrls] = useState<OutfitUrls | null>(null);
   const [theOutfitId, setTheOutfitId] = useState<string | null>(null);
+  const [displayDate, setDisplayDate] = useState("");
 
   const dateSelect = async (day: { dateString: string }) => {
     try {
       const selectedDate = day.dateString;
+      const dateParts = selectedDate.split("-");
+      setDisplayDate(`${dateParts[1]}/${dateParts[2]}/${dateParts[0]}`);
       const userID = getAuth().currentUser?.uid;
 
       const plannerDatesCollectionRef = collection(
@@ -88,10 +91,10 @@ const Planner: React.FC<PlannerProps> = ({ navigation }) => {
               if (itemDoc.exists()) {
                 return itemDoc.data()?.picture || null;
               } else {
-                return null; // Item not found, handle accordingly
+                return null;
               }
             } else {
-              return null; // Item ID is null, handle accordingly
+              return null;
             }
           };
 
@@ -152,11 +155,15 @@ const Planner: React.FC<PlannerProps> = ({ navigation }) => {
   };
 
   const markedDates = {
-    [date]: { selected: true, marked: true, selectedColor: "blue" },
+    [date]: { selected: true, marked: true, selectedColor: "#008080" },
   };
 
   return (
     <View style={styles.container}>
+      <View style={styles.titleContainer}>
+        <Text style={styles.screenTitle}>PLANNER</Text>
+      </View>
+
       <View style={styles.calendarContainer}>
         <Calendar
           style={{
@@ -170,7 +177,7 @@ const Planner: React.FC<PlannerProps> = ({ navigation }) => {
       </View>
       {theOutfitId ? (
         <View style={styles.dateContainer}>
-          <Text>Selected Date: {date}</Text>
+          <Text style={{ color: '#E5E5E5' }}>Selected Date: {displayDate}</Text>
           <View style={styles.imageContainer}>
             {outfitUrls?.hatUrl && (
               <Image source={{ uri: outfitUrls.hatUrl }} style={styles.image} />
@@ -206,18 +213,26 @@ const Planner: React.FC<PlannerProps> = ({ navigation }) => {
               />
             )}
           </View>
-          <Button
-            title="Delete Outfit from Date"
-            onPress={handleDeleteOutfit}
-          />
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              onPress={handleDeleteOutfit}
+              style={[styles.button, { backgroundColor: '#008080' }]}
+            >
+              <Text style={styles.buttonText}>Delete Outfit From Date</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       ) : date !== "" ? (
         <View style={styles.dateContainer}>
-          <Text>Selected Date: {date}</Text>
-          <Button
-            title="Choose Outfit"
-            onPress={navigateToChooseOutfitScreen}
-          />
+          <Text style={{ color: '#E5E5E5' }}>Selected Date: {displayDate}</Text>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              onPress={navigateToChooseOutfitScreen}
+              style={[styles.buttonSmaller, { backgroundColor: '#008080' }]}
+            >
+              <Text style={styles.buttonText}>Choose Outfit</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       ) : null}
     </View>
@@ -227,22 +242,25 @@ const Planner: React.FC<PlannerProps> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#36393e",
+    backgroundColor: "#282b30",
   },
   titleContainer: {
-    marginBottom: 20,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  title: {
-    fontSize: 35,
+  screenTitle: {
+    fontSize: 30,
+    marginTop: 70,
+    color: "#E5E5E5",
+    fontWeight: "500",
   },
   calendarContainer: {
+    marginTop: 100,
     alignItems: "center",
-    marginBottom: 50,
   },
   dateContainer: {
-    marginTop: 20,
+    marginTop: 70,
     alignItems: "center",
   },
   imageContainer: {
@@ -255,6 +273,27 @@ const styles = StyleSheet.create({
     width: 50,
     height: 50,
     marginHorizontal: 5,
+  },
+  buttonContainer: {
+    marginTop: 10,
+  },
+  button: {
+    width: 180,
+    height: 40,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonSmaller: {
+    width: 120,
+    height: 40,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#E5E5E5',
+    fontSize: 14,
   },
 });
 

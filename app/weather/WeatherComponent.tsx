@@ -76,7 +76,7 @@ const WeatherComponent = () => {
               uri: `http://openweathermap.org/img/wn/${current.icon}@2x.png`,
             }}
           />
-          <Text>{Math.round(forecast.current.temp)}°F</Text>
+          <Text style={{ color: '#E5E5E5' }}>{Math.round(forecast.current.temp)}°F</Text>
           <TouchableOpacity>
             <Text
               onPress={() => {
