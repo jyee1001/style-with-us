@@ -7,6 +7,7 @@ import {
   StyleSheet,
   FlatList,
   Touchable,
+  Image,
 } from "react-native";
 import React from "react";
 import { TouchableOpacity } from "react-native";
@@ -16,6 +17,7 @@ import GridView from "../GridView";
 interface TileData {
   id: string;
   title: string;
+  uri: string;
 
   //color: string;
 }
@@ -36,28 +38,34 @@ const Closet: React.FC<RouterProps> = ({ navigation }) => {
       <GridView
         data={[
           {
-            name: "Shirts",
+            name: "Hats",
             id: 1,
-          },
-          {
-            name: "Shorts",
-            id: 2,
-          },
-          {
-            name: "Pants",
-            id: 3,
+            uri: "https://i.ibb.co/t4fXGsz/hathat.png",
           },
           {
             name: "Jackets",
-            id: 4,
+            id: 2,
+            uri: "https://i.ibb.co/BjqDcn6/jackets.png",
           },
           {
-            name: "Hats",
+            name: "Shirts",
+            id: 3,
+            uri: "https://i.ibb.co/Yp9Ffk3/shirt.png",
+          },
+          {
+            name: "Pants",
+            id: 4,
+            uri: "https://i.ibb.co/FgxdpJp/pants-2.png",
+          },
+          {
+            name: "Shorts",
             id: 5,
+            uri: "https://i.ibb.co/kJhbh7j/shorts.png",
           },
           {
             name: "Shoes",
             id: 6,
+            uri: "https://i.ibb.co/54QbJbN/shoe.png",
           },
         ]}
         renderItem={(item) => (
@@ -65,6 +73,12 @@ const Closet: React.FC<RouterProps> = ({ navigation }) => {
             style={styles.itemContainer}
             onPress={() => handleTilePress(item.name)}
           >
+            <Image
+              source={{
+                uri: item.uri,
+              }}
+              style={styles.imageContainer}
+            />
             <Text style={styles.title}>{item.name}</Text>
           </TouchableOpacity>
         )}
@@ -84,7 +98,7 @@ const Closet: React.FC<RouterProps> = ({ navigation }) => {
             handleTilePress("Home");
           }}
         >
-          <Text style={styles.text}>Add an Outfit</Text>
+          <Text style={styles.text}>Create Outfit</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -98,7 +112,7 @@ const styles = StyleSheet.create({
     flex: 1,
     // justifyContent: "center",
     // alignItems: "center",
-    backgroundColor: "#36393e",
+    backgroundColor: "#282b30",
   },
   tile: {
     padding: 16,
@@ -113,15 +127,13 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     height: 100,
-    marginLeft: 10,
-    marginRight: 10,
-    backgroundColor: "white",
+    backgroundColor: "#E5E5E5",
     borderRadius: 5,
     marginBottom: 10,
     justifyContent: "center",
     alignItems: "center",
   },
-  title: { color: "black", fontWeight: "bold", fontSize: 25 },
+  title: { color: "black", fontWeight: "bold", fontSize: 13 },
 
   blankBox: {
     width: 20,
@@ -129,11 +141,12 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   outfitsButton: {
-    backgroundColor: "#B5734C",
+    backgroundColor: "#008080",
     marginLeft: 20,
-    borderRadius: 16,
-    height: 120,
-    width: 120,
+    marginRight: 10,
+    borderRadius: 5,
+    height: 40,
+    width: 110,
     alignContent: "center",
     alignItems: "center",
     justifyContent: "center",
@@ -144,7 +157,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     marginBottom: 20,
     borderRadius: 16,
-    backgroundColor: "#F8F8F8",
+    backgroundColor: "#282b30",
     flex: 1,
     justifyContent: "center",
     flexDirection: "row",
@@ -153,5 +166,12 @@ const styles = StyleSheet.create({
   },
   text: {
     fontWeight: "500",
+    color: "#E5E5E5",
   },
+  imageContainer: { width: 30, height: 30, marginBottom: 10 },
+  titleContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  screenTitle: { fontSize: 30, marginTop: 30, color: "#E5E5E5" },
 });
