@@ -16,6 +16,7 @@ import { FIRESTORE_DB } from "../../../FirebaseConfig";
 import GridView from "../GridView";
 
 interface Outfit {
+  id: string;
   hatId: string;
   jacketId: string;
   pantsId: string;
@@ -63,23 +64,23 @@ const Outfits = () => {
       if (clothingItem) items.push(clothingItem);
     }
 
-    if (outfit.pantsId) {
-      const clothingItem = await getClothingItemDetails(outfit.pantsId, "Pants");
-      if (clothingItem) items.push(clothingItem);
-    }
-
     if (outfit.shirtId) {
       const clothingItem = await getClothingItemDetails(outfit.shirtId, "Shirts");
       if (clothingItem) items.push(clothingItem);
     }
 
-    if (outfit.shoesId) {
-      const clothingItem = await getClothingItemDetails(outfit.shoesId, "Shoes");
+    if (outfit.pantsId) {
+      const clothingItem = await getClothingItemDetails(outfit.pantsId, "Pants");
       if (clothingItem) items.push(clothingItem);
     }
 
     if (outfit.shortsId) {
       const clothingItem = await getClothingItemDetails(outfit.shortsId, "Shorts");
+      if (clothingItem) items.push(clothingItem);
+    }
+
+    if (outfit.shoesId) {
+      const clothingItem = await getClothingItemDetails(outfit.shoesId, "Shoes");
       if (clothingItem) items.push(clothingItem);
     }
 
@@ -91,7 +92,7 @@ const Outfits = () => {
       const outfitRef = doc(collection(FIRESTORE_DB, "Outfits"), outfitId);
       await deleteDoc(outfitRef);
 
-      setOutfits((prevOutfits) => prevOutfits.filter((outfit) => outfitId !== outfit.userId));
+      setOutfits((prevOutfits) => prevOutfits.filter((outfit) => outfit.id !== outfitId));
       setClothingItemsArray([]);
     } catch (error) {
       console.error("Error deleting outfit:", error);
@@ -106,7 +107,7 @@ const Outfits = () => {
 
       const outfitsData: Outfit[] = [];
       querySnapshot.forEach((doc) => {
-        outfitsData.push(doc.data() as Outfit);
+        outfitsData.push({ id: doc.id, ...doc.data() } as Outfit);
       });
 
       setOutfits(outfitsData);
@@ -126,6 +127,7 @@ const Outfits = () => {
   }, [outfits]);
 
   return (
+    <View style={{ flex: 1, backgroundColor: '#282b30' }}>
     <SafeAreaView>
       <ScrollView contentContainerStyle={styles.container}>
         {clothingItemsArray.map((items, index) => (
@@ -138,13 +140,14 @@ const Outfits = () => {
               )}
               horizontal
             />
-            <TouchableOpacity onPress={() => handleDeleteOutfit(outfits[index]?.userId)}>
-              <Text>Delete</Text>
+            <TouchableOpacity onPress={() => handleDeleteOutfit(outfits[index]?.id)} style={[styles.deleteButton, { backgroundColor: '#008080' }]}>
+              <Text style={styles.buttonText}>Delete</Text>
             </TouchableOpacity>
           </View>
         ))}
       </ScrollView>
     </SafeAreaView>
+    </View>
   );
 };
 
@@ -159,7 +162,7 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     height: 250,
-    backgroundColor: "black",
+    backgroundColor: "#424549",
     borderRadius: 5,
     marginBottom: 10,
     justifyContent: "center",
@@ -170,5 +173,17 @@ const styles = StyleSheet.create({
     height: 150,
     borderRadius: 5,
     margin: 5,
+  },
+  deleteButton: {
+    width: 120,
+    height: 40,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  buttonText: {
+    color: '#E5E5E5',
+    fontSize: 14,
   },
 });

@@ -39,6 +39,7 @@ type ClothingType =
   | "Shorts"
   | "Shoes";
 type ClothingStyle =
+  | "Your Preferred Style"
   | "Casual"
   | "Formal/Elegant"
   | "Business Casual"
@@ -81,10 +82,14 @@ const Home = ({ navigation }: RouterProps) => {
     shorts: ClothingItem | null;
     shoes: ClothingItem | null;
   } | null>(null);
-  const [outfitStyle, setOutfitStyle] = useState<ClothingStyle>("Casual");
+  const [outfitStyle, setOutfitStyle] = useState<ClothingStyle>("Your Preferred Style");
   const [weather, setWeather] = useState<Weather>("Sunny");
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  const [welcome, setWelcome] = useState<string | null>("Style With Us!");
+
+  const [userPreference, setUserPreference] = useState("");
 
   const getRandomClothingItem = async (
     type: ClothingType,
@@ -112,6 +117,29 @@ const Home = ({ navigation }: RouterProps) => {
   };
 
   const generateRandomOutfit = async () => {
+    try {
+      const authUser = getAuth().currentUser;
+  
+      if (authUser) {
+        const userUid = authUser.uid;
+        const userDocRef = doc(FIRESTORE_DB, 'ProfileSettings', userUid);
+        const userDocSnapshot = await getDoc(userDocRef);
+        if (userDocSnapshot.exists()) {
+          const stylePreference = userDocSnapshot.data()?.stylePreference;
+          console.log('User Style Preference:', stylePreference);
+
+          if (stylePreference === "") {
+            setErrorMessage(
+              "Please choose a\nStyle Preference\nin the Profile Page."
+            );
+            setSuccessMessage(null);
+            setWelcome(null);
+            return;
+          }
+          setUserPreference(stylePreference);
+          console.log("User Preference is: ");
+          console.log(userPreference);
+
     let theHat = null;
     let theJacket = null;
     let theShirt = null;
@@ -119,10 +147,8 @@ const Home = ({ navigation }: RouterProps) => {
     let theShorts = null;
     let theShoes = null;
 
-    setSuccessMessage(null);
-
     if (weather === "Sunny") {
-      if (outfitStyle === "Casual") {
+      if (outfitStyle === "Casual" || (outfitStyle === "Your Preferred Style" && stylePreference === "Casual")) {
         theHat = await getRandomClothingItem("Hats", "Casual");
         theShirt = await getRandomClothingItem("Shirts", "Casual");
         thePants = await getRandomClothingItem("Pants", "Casual");
@@ -132,6 +158,9 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Casual hat, shirt, pants, shorts, and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
         if (Math.random() < 0.5) {
@@ -139,7 +168,7 @@ const Home = ({ navigation }: RouterProps) => {
         } else {
           theShorts = null;
         }
-      } else if (outfitStyle === "Formal/Elegant") {
+      } else if (outfitStyle === "Formal/Elegant" || (outfitStyle === "Your Preferred Style" && stylePreference === "Formal/Elegant")) {
         theShirt = await getRandomClothingItem("Shirts", "Formal/Elegant");
         thePants = await getRandomClothingItem("Pants", "Formal/Elegant");
         theShoes = await getRandomClothingItem("Shoes", "Formal/Elegant");
@@ -147,9 +176,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Formal/Elegant shirt, pants, and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Business Casual") {
+      } else if (outfitStyle === "Business Casual" || (outfitStyle === "Your Preferred Style" && stylePreference === "Business Casual")) {
         theShirt = await getRandomClothingItem("Shirts", "Formal/Elegant");
         thePants = await getRandomClothingItem("Pants", "Casual");
         theShoes = await getRandomClothingItem("Shoes", "Casual");
@@ -157,9 +189,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Formal/Elegant shirt and one Casual pants and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Sporty") {
+      } else if (outfitStyle === "Sporty" || (outfitStyle === "Your Preferred Style" && stylePreference === "Sporty")) {
         theShirt = await getRandomClothingItem("Shirts", "Sporty");
         thePants = await getRandomClothingItem("Pants", "Sporty");
         theShorts = await getRandomClothingItem("Shorts", "Sporty");
@@ -168,6 +203,9 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Sporty shirt, pants, shorts, and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
         if (Math.random() < 0.5) {
@@ -175,7 +213,7 @@ const Home = ({ navigation }: RouterProps) => {
         } else {
           theShorts = null;
         }
-      } else if (outfitStyle === "Relaxed") {
+      } else if (outfitStyle === "Relaxed" || (outfitStyle === "Your Preferred Style" && stylePreference === "Relaxed")) {
         theShirt = await getRandomClothingItem("Shirts", "Casual");
         thePants = await getRandomClothingItem("Pants", "Sporty");
         theShorts = await getRandomClothingItem("Shorts", "Sporty");
@@ -184,6 +222,9 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Casual shirt and shoes and one Sporty pants and shorts to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
         if (Math.random() < 0.5) {
@@ -191,7 +232,7 @@ const Home = ({ navigation }: RouterProps) => {
         } else {
           theShorts = null;
         }
-      } else if (outfitStyle === "Streetwear") {
+      } else if (outfitStyle === "Streetwear" || (outfitStyle === "Your Preferred Style" && stylePreference === "Streetwear")) {
         theHat = await getRandomClothingItem("Hats", "Streetwear");
         theShirt = await getRandomClothingItem("Shirts", "Streetwear");
         thePants = await getRandomClothingItem("Pants", "Casual");
@@ -201,6 +242,9 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Streetwear hat, shirt, and shoes and one Casual pants and shorts to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
         if (Math.random() < 0.5) {
@@ -208,7 +252,7 @@ const Home = ({ navigation }: RouterProps) => {
         } else {
           theShorts = null;
         }
-      } else if (outfitStyle === "Retro") {
+      } else if (outfitStyle === "Retro" || (outfitStyle === "Your Preferred Style" && stylePreference === "Retro")) {
         theHat = await getRandomClothingItem("Hats", "Retro");
         theShirt = await getRandomClothingItem("Shirts", "Retro");
         thePants = await getRandomClothingItem("Pants", "Retro");
@@ -218,6 +262,9 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Retro hat, shirt, pants, shorts and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
         if (Math.random() < 0.5) {
@@ -230,7 +277,7 @@ const Home = ({ navigation }: RouterProps) => {
       weather === "Cloudy" ||
       weather === "Cold (less than 60\u00b0F)"
     ) {
-      if (outfitStyle === "Casual") {
+      if (outfitStyle === "Casual" || (outfitStyle === "Your Preferred Style" && stylePreference === "Casual")) {
         theJacket = await getRandomClothingItem("Jackets", "Casual");
         theShirt = await getRandomClothingItem("Shirts", "Casual");
         thePants = await getRandomClothingItem("Pants", "Casual");
@@ -239,9 +286,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Casual jacket, shirt, pants, and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Formal/Elegant") {
+      } else if (outfitStyle === "Formal/Elegant" || (outfitStyle === "Your Preferred Style" && stylePreference === "Formal/Elegant")) {
         theJacket = await getRandomClothingItem("Jackets", "Formal/Elegant");
         theShirt = await getRandomClothingItem("Shirts", "Formal/Elegant");
         thePants = await getRandomClothingItem("Pants", "Formal/Elegant");
@@ -250,9 +300,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Formal/Elegant jacket, shirt, pants, and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Business Casual") {
+      } else if (outfitStyle === "Business Casual" || (outfitStyle === "Your Preferred Style" && stylePreference === "Business Casual")) {
         theJacket = await getRandomClothingItem("Jackets", "Casual");
         theShirt = await getRandomClothingItem("Shirts", "Formal/Elegant");
         thePants = await getRandomClothingItem("Pants", "Casual");
@@ -261,9 +314,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Casual jacket, pants, and shoes and one Formal/Elegant shirt to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Sporty") {
+      } else if (outfitStyle === "Sporty" || (outfitStyle === "Your Preferred Style" && stylePreference === "Sporty")) {
         theJacket = await getRandomClothingItem("Jackets", "Sporty");
         theShirt = await getRandomClothingItem("Shirts", "Sporty");
         thePants = await getRandomClothingItem("Pants", "Sporty");
@@ -272,9 +328,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Sporty jacket, shirt, pants, and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Relaxed") {
+      } else if (outfitStyle === "Relaxed" || (outfitStyle === "Your Preferred Style" && stylePreference === "Relaxed")) {
         theJacket = await getRandomClothingItem("Jackets", "Sporty");
         theShirt = await getRandomClothingItem("Shirts", "Casual");
         thePants = await getRandomClothingItem("Pants", "Sporty");
@@ -283,9 +342,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Sporty jacket and pants and one Casual shirt and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Streetwear") {
+      } else if (outfitStyle === "Streetwear" || (outfitStyle === "Your Preferred Style" && stylePreference === "Streetwear")) {
         theJacket = await getRandomClothingItem("Jackets", "Casual");
         theShirt = await getRandomClothingItem("Shirts", "Streetwear");
         thePants = await getRandomClothingItem("Pants", "Casual");
@@ -294,9 +356,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Casual jacket and pants and one Streetwear shirt and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Retro") {
+      } else if (outfitStyle === "Retro" || (outfitStyle === "Your Preferred Style" && stylePreference === "Retro")) {
         theJacket = await getRandomClothingItem("Jackets", "Retro");
         theShirt = await getRandomClothingItem("Shirts", "Retro");
         thePants = await getRandomClothingItem("Pants", "Retro");
@@ -305,11 +370,14 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Retro jacket, shirt, pants, and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
       }
     } else if (weather === "Rainy") {
-      if (outfitStyle === "Casual") {
+      if (outfitStyle === "Casual" || (outfitStyle === "Your Preferred Style" && stylePreference === "Casual")) {
         theJacket = await getRandomClothingItem("Jackets", "Waterproof");
         theShirt = await getRandomClothingItem("Shirts", "Casual");
         thePants = await getRandomClothingItem("Pants", "Casual");
@@ -318,9 +386,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Waterproof jacket and shoes and one Casual shirt and pants to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Formal/Elegant") {
+      } else if (outfitStyle === "Formal/Elegant" || (outfitStyle === "Your Preferred Style" && stylePreference === "Formal/Elegant")) {
         theJacket = await getRandomClothingItem("Jackets", "Waterproof");
         theShirt = await getRandomClothingItem("Shirts", "Formal/Elegant");
         thePants = await getRandomClothingItem("Pants", "Formal/Elegant");
@@ -329,9 +400,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Waterproof jacket and one Formal/Elegant shirt, pants, and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Business Casual") {
+      } else if (outfitStyle === "Business Casual" || (outfitStyle === "Your Preferred Style" && stylePreference === "Business Casual")) {
         theJacket = await getRandomClothingItem("Jackets", "Waterproof");
         theShirt = await getRandomClothingItem("Shirts", "Formal/Elegant");
         thePants = await getRandomClothingItem("Pants", "Casual");
@@ -340,9 +414,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Waterproof jacket and shoes, one Formal/Elegant shirt, and one Casual pants to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Sporty") {
+      } else if (outfitStyle === "Sporty" || (outfitStyle === "Your Preferred Style" && stylePreference === "Sporty")) {
         theJacket = await getRandomClothingItem("Jackets", "Waterproof");
         theShirt = await getRandomClothingItem("Shirts", "Sporty");
         thePants = await getRandomClothingItem("Pants", "Sporty");
@@ -351,9 +428,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Waterproof jacket and one Sporty shirt, pants, and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Relaxed") {
+      } else if (outfitStyle === "Relaxed" || (outfitStyle === "Your Preferred Style" && stylePreference === "Relaxed")) {
         theJacket = await getRandomClothingItem("Jackets", "Waterproof");
         theShirt = await getRandomClothingItem("Shirts", "Casual");
         thePants = await getRandomClothingItem("Pants", "Sporty");
@@ -362,9 +442,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Waterproof jacket, one Casual shirt and shoes, and one Sporty pants to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Streetwear") {
+      } else if (outfitStyle === "Streetwear" || (outfitStyle === "Your Preferred Style" && stylePreference === "Streetwear")) {
         theJacket = await getRandomClothingItem("Jackets", "Waterproof");
         theShirt = await getRandomClothingItem("Shirts", "Streetwear");
         thePants = await getRandomClothingItem("Pants", "Casual");
@@ -373,9 +456,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Waterproof jacket, one Streetwear shirt and shoes, and one Casual pants to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Retro") {
+      } else if (outfitStyle === "Retro" || (outfitStyle === "Your Preferred Style" && stylePreference === "Retro")) {
         theJacket = await getRandomClothingItem("Jackets", "Waterproof");
         theShirt = await getRandomClothingItem("Shirts", "Retro");
         thePants = await getRandomClothingItem("Pants", "Retro");
@@ -384,11 +470,14 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Waterproof jacket and one Retro shirt, pants, and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
       }
     } else if (weather === "Snowy") {
-      if (outfitStyle === "Casual" || outfitStyle === "Relaxed") {
+      if (outfitStyle === "Casual" || outfitStyle === "Relaxed" || (outfitStyle === "Your Preferred Style" && stylePreference === "Casual") || (outfitStyle === "Your Preferred Style" && stylePreference === "Relaxed")) {
         theHat = await getRandomClothingItem("Hats", "Snowwear");
         theJacket = await getRandomClothingItem("Jackets", "Snowwear");
         theShirt = await getRandomClothingItem("Shirts", "Casual");
@@ -398,11 +487,14 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Snowwear hat, jacket, pants, and shoes and one Casual shirt to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
       } else if (
         outfitStyle === "Formal/Elegant" ||
-        outfitStyle === "Business Casual"
+        outfitStyle === "Business Casual" || (outfitStyle === "Your Preferred Style" && stylePreference === "Formal/Elegant") || (outfitStyle === "Your Preferred Style" && stylePreference === "Business Casual")
       ) {
         theHat = await getRandomClothingItem("Hats", "Snowwear");
         theJacket = await getRandomClothingItem("Jackets", "Snowwear");
@@ -413,9 +505,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Snowwear hat, jacket, pants, and shoes and one Formal/Elegant shirt to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Sporty") {
+      } else if (outfitStyle === "Sporty" || (outfitStyle === "Your Preferred Style" && stylePreference === "Sporty")) {
         theHat = await getRandomClothingItem("Hats", "Snowwear");
         theJacket = await getRandomClothingItem("Jackets", "Snowwear");
         theShirt = await getRandomClothingItem("Shirts", "Sporty");
@@ -425,9 +520,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Snowwear hat, jacket, pants, and shoes and one Sporty shirt to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Streetwear") {
+      } else if (outfitStyle === "Streetwear" || (outfitStyle === "Your Preferred Style" && stylePreference === "Streetwear")) {
         theHat = await getRandomClothingItem("Hats", "Snowwear");
         theJacket = await getRandomClothingItem("Jackets", "Snowwear");
         theShirt = await getRandomClothingItem("Shirts", "Streetwear");
@@ -437,9 +535,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Snowwear hat, jacket, pants, and shoes and one Streetwear shirt to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Retro") {
+      } else if (outfitStyle === "Retro" || (outfitStyle === "Your Preferred Style" && stylePreference === "Retro")) {
         theHat = await getRandomClothingItem("Hats", "Snowwear");
         theJacket = await getRandomClothingItem("Jackets", "Snowwear");
         theShirt = await getRandomClothingItem("Shirts", "Retro");
@@ -449,11 +550,14 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Snowwear hat, jacket, pants, and shoes and one Retro shirt to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
       }
     } else if (weather === "Hot (80\u00b0F or more)") {
-      if (outfitStyle === "Casual") {
+      if (outfitStyle === "Casual" || (outfitStyle === "Your Preferred Style" && stylePreference === "Casual")) {
         theHat = await getRandomClothingItem("Hats", "Casual");
         theShirt = await getRandomClothingItem("Shirts", "Casual");
         theShorts = await getRandomClothingItem("Shorts", "Casual");
@@ -462,9 +566,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Casual hat, shirt, shorts, and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Formal/Elegant") {
+      } else if (outfitStyle === "Formal/Elegant" || (outfitStyle === "Your Preferred Style" && stylePreference === "Formal/Elegant")) {
         theShirt = await getRandomClothingItem("Shirts", "Formal/Elegant");
         thePants = await getRandomClothingItem("Pants", "Formal/Elegant");
         theShoes = await getRandomClothingItem("Shoes", "Formal/Elegant");
@@ -472,9 +579,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Formal/Elegant shirt, pants, and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Business Casual") {
+      } else if (outfitStyle === "Business Casual" || (outfitStyle === "Your Preferred Style" && stylePreference === "Business Casual")) {
         theShirt = await getRandomClothingItem("Shirts", "Formal/Elegant");
         thePants = await getRandomClothingItem("Pants", "Casual");
         theShoes = await getRandomClothingItem("Shoes", "Casual");
@@ -482,9 +592,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Formal/Elegant shirt and one Casual pants and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Sporty") {
+      } else if (outfitStyle === "Sporty" || (outfitStyle === "Your Preferred Style" && stylePreference === "Sporty")) {
         theHat = await getRandomClothingItem("Hats", "Sporty");
         theShirt = await getRandomClothingItem("Shirts", "Sporty");
         theShorts = await getRandomClothingItem("Shorts", "Sporty");
@@ -493,9 +606,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Sporty hat, shirt, shorts, and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Relaxed") {
+      } else if (outfitStyle === "Relaxed" || (outfitStyle === "Your Preferred Style" && stylePreference === "Relaxed")) {
         theHat = await getRandomClothingItem("Hats", "Sporty");
         theShirt = await getRandomClothingItem("Shirts", "Casual");
         theShorts = await getRandomClothingItem("Shorts", "Sporty");
@@ -504,9 +620,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Sporty hat and shorts and one Casual shirt and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Streetwear") {
+      } else if (outfitStyle === "Streetwear" || (outfitStyle === "Your Preferred Style" && stylePreference === "Streetwear")) {
         theHat = await getRandomClothingItem("Hats", "Streetwear");
         theShirt = await getRandomClothingItem("Shirts", "Streetwear");
         theShorts = await getRandomClothingItem("Shorts", "Casual");
@@ -515,9 +634,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Streetwear hat, shirt, and shoes and one Casual shorts to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Retro") {
+      } else if (outfitStyle === "Retro" || (outfitStyle === "Your Preferred Style" && stylePreference === "Retro")) {
         theHat = await getRandomClothingItem("Hats", "Retro");
         theShirt = await getRandomClothingItem("Shirts", "Retro");
         theShorts = await getRandomClothingItem("Shorts", "Retro");
@@ -526,11 +648,14 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Retro hat, shirt, shorts and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
       }
     } else if (weather === "Warm (70\u00b0F to 80\u00b0F)") {
-      if (outfitStyle === "Casual") {
+      if (outfitStyle === "Casual" || (outfitStyle === "Your Preferred Style" && stylePreference === "Casual")) {
         theHat = await getRandomClothingItem("Hats", "Casual");
         theShirt = await getRandomClothingItem("Shirts", "Casual");
         thePants = await getRandomClothingItem("Pants", "Casual");
@@ -540,6 +665,9 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Casual hat, shirt, pants, shorts, and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
         if (Math.random() < 0.5) {
@@ -550,7 +678,7 @@ const Home = ({ navigation }: RouterProps) => {
         if (Math.random() < 0.5) {
           theHat = null;
         }
-      } else if (outfitStyle === "Formal/Elegant") {
+      } else if (outfitStyle === "Formal/Elegant" || (outfitStyle === "Your Preferred Style" && stylePreference === "Formal/Elegant")) {
         theShirt = await getRandomClothingItem("Shirts", "Formal/Elegant");
         thePants = await getRandomClothingItem("Pants", "Formal/Elegant");
         theShoes = await getRandomClothingItem("Shoes", "Formal/Elegant");
@@ -558,9 +686,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Formal/Elegant shirt, pants, and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Business Casual") {
+      } else if (outfitStyle === "Business Casual" || (outfitStyle === "Your Preferred Style" && stylePreference === "Business Casual")) {
         theShirt = await getRandomClothingItem("Shirts", "Formal/Elegant");
         thePants = await getRandomClothingItem("Pants", "Casual");
         theShoes = await getRandomClothingItem("Shoes", "Casual");
@@ -568,9 +699,12 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Formal/Elegant shirt and one Casual pants and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
-      } else if (outfitStyle === "Sporty") {
+      } else if (outfitStyle === "Sporty" || (outfitStyle === "Your Preferred Style" && stylePreference === "Sporty")) {
         theHat = await getRandomClothingItem("Hats", "Sporty");
         theShirt = await getRandomClothingItem("Shirts", "Sporty");
         thePants = await getRandomClothingItem("Pants", "Sporty");
@@ -580,6 +714,9 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Sporty hat, shirt, pants, shorts, and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
         if (Math.random() < 0.5) {
@@ -590,7 +727,7 @@ const Home = ({ navigation }: RouterProps) => {
         if (Math.random() < 0.5) {
           theHat = null;
         }
-      } else if (outfitStyle === "Relaxed") {
+      } else if (outfitStyle === "Relaxed" || (outfitStyle === "Your Preferred Style" && stylePreference === "Relaxed")) {
         theHat = await getRandomClothingItem("Hats", "Sporty");
         theShirt = await getRandomClothingItem("Shirts", "Casual");
         thePants = await getRandomClothingItem("Pants", "Sporty");
@@ -600,6 +737,9 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Sporty hat, pants, and shorts and one Casual shirt and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
         if (Math.random() < 0.5) {
@@ -610,7 +750,7 @@ const Home = ({ navigation }: RouterProps) => {
         if (Math.random() < 0.5) {
           theHat = null;
         }
-      } else if (outfitStyle === "Streetwear") {
+      } else if (outfitStyle === "Streetwear" || (outfitStyle === "Your Preferred Style" && stylePreference === "Streetwear")) {
         theHat = await getRandomClothingItem("Hats", "Streetwear");
         theShirt = await getRandomClothingItem("Shirts", "Streetwear");
         thePants = await getRandomClothingItem("Pants", "Casual");
@@ -620,6 +760,9 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Streetwear hat, shirt, and shoes and one Casual pants and shorts to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
         if (Math.random() < 0.5) {
@@ -630,7 +773,7 @@ const Home = ({ navigation }: RouterProps) => {
         if (Math.random() < 0.5) {
           theHat = null;
         }
-      } else if (outfitStyle === "Retro") {
+      } else if (outfitStyle === "Retro" || (outfitStyle === "Your Preferred Style" && stylePreference === "Retro")) {
         theHat = await getRandomClothingItem("Hats", "Retro");
         theShirt = await getRandomClothingItem("Shirts", "Retro");
         thePants = await getRandomClothingItem("Pants", "Retro");
@@ -640,6 +783,9 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Retro hat, shirt, pants, shorts and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
         if (Math.random() < 0.5) {
@@ -652,7 +798,7 @@ const Home = ({ navigation }: RouterProps) => {
         }
       }
     } else if (weather === "Cool (60 \u00b0F to 70\u00b0F)") {
-      if (outfitStyle === "Casual") {
+      if (outfitStyle === "Casual" || (outfitStyle === "Your Preferred Style" && stylePreference === "Casual")) {
         theJacket = await getRandomClothingItem("Jackets", "Casual");
         theShirt = await getRandomClothingItem("Shirts", "Casual");
         thePants = await getRandomClothingItem("Pants", "Casual");
@@ -661,12 +807,15 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Casual jacket, shirt, pants, and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
         if (Math.random() < 0.5) {
           theJacket = null;
         }
-      } else if (outfitStyle === "Formal/Elegant") {
+      } else if (outfitStyle === "Formal/Elegant" || (outfitStyle === "Your Preferred Style" && stylePreference === "Formal/Elegant")) {
         theJacket = await getRandomClothingItem("Jackets", "Formal/Elegant");
         theShirt = await getRandomClothingItem("Shirts", "Formal/Elegant");
         thePants = await getRandomClothingItem("Pants", "Formal/Elegant");
@@ -675,12 +824,15 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Formal/Elegant jacket, shirt, pants, and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
         if (Math.random() < 0.5) {
           theJacket = null;
         }
-      } else if (outfitStyle === "Business Casual") {
+      } else if (outfitStyle === "Business Casual" || (outfitStyle === "Your Preferred Style" && stylePreference === "Business Casual")) {
         theJacket = await getRandomClothingItem("Jackets", "Casual");
         theShirt = await getRandomClothingItem("Shirts", "Formal/Elegant");
         thePants = await getRandomClothingItem("Pants", "Casual");
@@ -689,12 +841,15 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Casual jacket, pants, and shoes and one Formal/Elegant shirt to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
         if (Math.random() < 0.5) {
           theJacket = null;
         }
-      } else if (outfitStyle === "Sporty") {
+      } else if (outfitStyle === "Sporty" || (outfitStyle === "Your Preferred Style" && stylePreference === "Sporty")) {
         theJacket = await getRandomClothingItem("Jackets", "Sporty");
         theShirt = await getRandomClothingItem("Shirts", "Sporty");
         thePants = await getRandomClothingItem("Pants", "Sporty");
@@ -703,12 +858,15 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Sporty jacket, shirt, pants, and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
         if (Math.random() < 0.5) {
           theJacket = null;
         }
-      } else if (outfitStyle === "Relaxed") {
+      } else if (outfitStyle === "Relaxed" || (outfitStyle === "Your Preferred Style" && stylePreference === "Relaxed")) {
         theJacket = await getRandomClothingItem("Jackets", "Sporty");
         theShirt = await getRandomClothingItem("Shirts", "Casual");
         thePants = await getRandomClothingItem("Pants", "Sporty");
@@ -717,12 +875,15 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Sporty jacket and pants and one Casual shirt and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
         if (Math.random() < 0.5) {
           theJacket = null;
         }
-      } else if (outfitStyle === "Streetwear") {
+      } else if (outfitStyle === "Streetwear" || (outfitStyle === "Your Preferred Style" && stylePreference === "Streetwear")) {
         theJacket = await getRandomClothingItem("Jackets", "Casual");
         theShirt = await getRandomClothingItem("Shirts", "Streetwear");
         thePants = await getRandomClothingItem("Pants", "Casual");
@@ -731,12 +892,15 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Casual jacket and pants and one Streetwear shirt and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
         if (Math.random() < 0.5) {
           theJacket = null;
         }
-      } else if (outfitStyle === "Retro") {
+      } else if (outfitStyle === "Retro" || (outfitStyle === "Your Preferred Style" && stylePreference === "Retro")) {
         theJacket = await getRandomClothingItem("Jackets", "Retro");
         theShirt = await getRandomClothingItem("Shirts", "Retro");
         thePants = await getRandomClothingItem("Pants", "Retro");
@@ -745,6 +909,9 @@ const Home = ({ navigation }: RouterProps) => {
           setErrorMessage(
             "Need at least one Retro jacket, shirt, pants, and shoes to complete this outfit."
           );
+          setOutfit(null);
+          setWelcome(null);
+          setSuccessMessage(null);
           return;
         }
         if (Math.random() < 0.5) {
@@ -753,7 +920,9 @@ const Home = ({ navigation }: RouterProps) => {
       }
     }
 
+    setSuccessMessage(null);
     setErrorMessage(null);
+    setWelcome(null);
     setOutfit({
       hat: theHat,
       jacket: theJacket,
@@ -762,11 +931,45 @@ const Home = ({ navigation }: RouterProps) => {
       shorts: theShorts,
       shoes: theShoes,
     });
+
+  } else {
+    console.log('User document does not exist.');
+  }
+} else {
+  console.log('User not authenticated.');
+}
+} catch (error) {
+console.error('Error fetching user data:', error);
+}
   };
 
   const saveOutfit = async () => {
     if (outfit) {
       try {
+        if (outfitStyle === "Your Preferred Style") {
+          if (userPreference === "Casual") {
+            setOutfitStyle("Casual");
+          }
+          else if (userPreference === "Formal/Elegant") {
+            setOutfitStyle("Formal/Elegant");
+          }
+          else if (userPreference === "Business Casual") {
+            setOutfitStyle("Business Casual");
+          }
+          else if (userPreference === "Sporty") {
+            setOutfitStyle("Sporty");
+          }
+          else if (userPreference === "Relaxed") {
+            setOutfitStyle("Relaxed");
+          }
+          else if (userPreference === "Streetwear") {
+            setOutfitStyle("Streetwear");
+          }
+          else if (userPreference === "Retro") {
+            setOutfitStyle("Retro");
+          }
+        }
+
         const outfitsRef = collection(FIRESTORE_DB, "Outfits");
         const outfitData = {
           hatId: outfit.hat?.id || null,
@@ -782,7 +985,8 @@ const Home = ({ navigation }: RouterProps) => {
 
         await addDoc(outfitsRef, outfitData);
         console.log("Outfit saved successfully!");
-        setSuccessMessage("Outfit Saved Sucessfully!");
+        setSuccessMessage("Outfit Saved\nto your Closet!");
+        setOutfit(null);
       } catch (error) {
         console.error("Error adding outfit: ", error);
       }
@@ -792,9 +996,19 @@ const Home = ({ navigation }: RouterProps) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.weatherContainer}>
-        <Text style={styles.weatherText}>Todays Weather</Text>
+        <Text style={styles.weatherText}>Today's Weather:</Text>
         <WeatherComponent></WeatherComponent>
       </View>
+
+      {welcome && (
+      <View style={styles.titleContainer}>
+        <Text style={styles.welcomeMessage}>Welcome to</Text>
+        <Text style={styles.welcomeMessageTitle}>{welcome}</Text>
+        <Text style={styles.welcomeMessage}></Text>
+        <Text style={styles.welcomeMessage}>What kind of outfit do you want to generate today?</Text>
+    </View>
+      )}
+
       {outfit && (
         <View style={styles.outfitContainer}>
           {outfit.hat && (
@@ -885,16 +1099,21 @@ const Home = ({ navigation }: RouterProps) => {
             </View>
           )}
 
-          <TouchableOpacity onPress={saveOutfit} style={styles.saveButton}>
-            <Text>Save Outfit</Text>
+          <TouchableOpacity onPress={saveOutfit} style={[styles.saveButton, { backgroundColor: '#008080' }]}>
+            <Text style={styles.buttonText}>Save Outfit</Text>
           </TouchableOpacity>
         </View>
       )}
 
-      {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
-      {successMessage && (
+      {errorMessage &&
+      <View style={styles.titleContainer}>
+        <Text style={styles.errorMessage}>{errorMessage}</Text>
+      </View>}
+
+      {successMessage &&
+        <View style={styles.titleContainer}>
         <Text style={styles.successMessage}>{successMessage}</Text>
-      )}
+      </View>}
 
       <View style={styles.homeAdjusts}>
         <View style={styles.pickerContainer}>
@@ -902,6 +1121,7 @@ const Home = ({ navigation }: RouterProps) => {
             placeholder={{ label: " Select Outfit Style", value: "" }}
             onValueChange={(value) => setOutfitStyle(value)}
             items={[
+              { label: " Your Preferred Style", value: "Your Preferred Style" },
               { label: " Casual", value: "Casual" },
               { label: " Formal/Elegant", value: "Formal/Elegant" },
               { label: " Business Casual", value: "Business Casual" },
@@ -910,11 +1130,19 @@ const Home = ({ navigation }: RouterProps) => {
               { label: " Streetwear", value: "Streetwear" },
               { label: " Retro", value: "Retro" },
             ]}
+            style={{
+              inputAndroid: {
+                color: '#E5E5E5',
+              },
+              inputIOS: {
+                color: '#E5E5E5',
+              },
+            }}
           />
         </View>
         <View style={styles.pickerContainer}>
           <RNPickerSelect
-            placeholder={{ label: "Select Weather", value: "" }}
+            placeholder={{ label: " Select Weather", value: "" }}
             onValueChange={(value) => setWeather(value)}
             items={[
               { label: " Sunny", value: "Sunny" },
@@ -938,14 +1166,22 @@ const Home = ({ navigation }: RouterProps) => {
                 value: "Cold (less than 60\u00b0F)",
               },
             ]}
+            style={{
+              inputAndroid: {
+                color: '#E5E5E5',
+              },
+              inputIOS: {
+                color: '#E5E5E5',
+              },
+            }}
           />
         </View>
 
         <TouchableOpacity
           onPress={generateRandomOutfit}
-          style={styles.generateButton}
+          style={[styles.generateButton, { backgroundColor: '#008080' }]}
         >
-          <Text>Generate Outfit</Text>
+          <Text style={styles.buttonText}>Generate Outfit</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -955,23 +1191,46 @@ const Home = ({ navigation }: RouterProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#36393e",
+    //backgroundColor: "#36393e",
     alignItems: "center",
-
+    backgroundColor: "#282b30",
     justifyContent: "flex-start",
     flexDirection: "column",
   },
 
+  titleContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+    margin: 40,
+    flex: 1,
+  },
+
+  welcomeMessage: {
+    fontSize: 30,
+    color: "#E5E5E5",
+    fontWeight: "500",
+    textAlign: "center",
+  },
+
+  welcomeMessageTitle: {
+    fontSize: 50,
+    color: "#008080",
+    fontWeight: "500",
+    textAlign: "center",
+  },
+
   errorMessage: {
-    color: "red",
-    fontSize: 16,
-    marginBottom: 10,
+    fontSize: 30,
+    color: "#E5E5E5",
+    fontWeight: "500",
+    textAlign: "left",
   },
 
   successMessage: {
-    color: "blue",
-    fontSize: 16,
-    marginBottom: 10,
+    fontSize: 40,
+    color: "#008080",
+    fontWeight: "500",
+    textAlign: "center",
   },
 
   homeAdjusts: {
@@ -980,37 +1239,43 @@ const styles = StyleSheet.create({
   },
 
   pickerContainer: {
-    width: 350,
-    borderWidth: 2,
-    height: 40,
-    marginBottom: 20,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
-    borderRadius: 6,
+    width: 340,
+    height: 50,
+    //backgroundColor: 'white',
+    //borderRadius: 5,
+    color: '#E5E5E5',
+    fontSize: 16,
+    backgroundColor: '#424549',
+    borderRadius: 10,
+    marginBottom: 10,
   },
 
   outfitContainer: {
     flex: 1,
+    justifyContent: "center",
+    //alignItems: "center",
     width: "50%",
+    marginBottom: 20,
   },
 
   clothingItemContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 10,
   },
 
   imageContainer: {
-    width: 75,
-    height: 75,
+    width: 65,
+    height: 65,
   },
 
   image: {
-    width: 75,
-    height: 75,
+    width: 65,
+    height: 65,
     resizeMode: "cover",
-    borderColor: "#7289da",
+    borderColor: "#424549",
     borderRadius: 8,
     borderWidth: 3,
   },
@@ -1021,13 +1286,13 @@ const styles = StyleSheet.create({
   },
 
   outfitText: {
-    color: "white",
+    color: "#E5E5E5",
     fontSize: 16,
     marginBottom: 10,
   },
   weatherContainer: {
-    backgroundColor: "#fff",
-    marginBottom: 50,
+    backgroundColor: "#008080",
+    marginBottom: 20,
     width: "90%",
     height: "8%",
     marginLeft: 20,
@@ -1039,38 +1304,55 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   generateButton: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    paddingVertical: 6,
-    paddingHorizontal: 14,
-    borderRadius: 6,
-    backgroundColor: "#fff",
-    borderColor: "transparent", // No border
-    borderWidth: 0, // No border
-    boxShadow: "0px 0.5px 1px rgba(0, 0, 0, 0.1)", // Not supported, use elevation for shadows
-    elevation: 2, // For Android shadow
-    userSelect: "none",
-    touchAction: "manipulation",
+    //display: "flex",
+    //flexDirection: "column",
+    //alignItems: "center",
+    //paddingVertical: 6,
+    //paddingHorizontal: 14,
+    //borderRadius: 6,
+    //backgroundColor: "#fff",
+    //borderColor: "transparent",
+    //borderWidth: 0,
+    //boxShadow: "0px 0.5px 1px rgba(0, 0, 0, 0.1)",
+    //elevation: 2,
+    //userSelect: "none",
+    //touchAction: "manipulation",
+    width: 120,
+    height: 40,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   weatherText: {
     fontSize: 30,
     marginLeft: 10,
+    color: '#E5E5E5',
   },
   saveButton: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    paddingVertical: 6,
-    paddingHorizontal: 14,
-    borderRadius: 6,
-    backgroundColor: "#7289da",
-    borderColor: "transparent", // No border
-    borderWidth: 0, // No border
-    boxShadow: "0px 0.5px 1px rgba(0, 0, 0, 0.1)", // Not supported, use elevation for shadows
-    elevation: 2, // For Android shadow
-    userSelect: "none",
-    touchAction: "manipulation",
+    //display: "flex",
+    //flexDirection: "column",
+    //alignItems: "center",
+    //paddingVertical: 6,
+    //paddingHorizontal: 14,
+    //borderRadius: 6,
+    //backgroundColor: "#7289da",
+    //borderColor: "transparent",
+    //borderWidth: 0,
+    //boxShadow: "0px 0.5px 1px rgba(0, 0, 0, 0.1)",
+    //elevation: 2,
+    //userSelect: "none",
+    //touchAction: "manipulation",
+    width: 120,
+    height: 40,
+    marginLeft: 37,
+    marginTop: 5,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#E5E5E5',
+    fontSize: 14,
   },
 });
 

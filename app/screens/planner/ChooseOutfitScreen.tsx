@@ -89,16 +89,17 @@ const ChooseOutfitScreen: React.FC<ChooseOutfitScreenProps> = ({ navigation }) =
     try {
       const itemDoc = await getDoc(doc(FIRESTORE_DB, type, itemId));
       const itemData = itemDoc.data();
-      const imageUrl = itemData?.picture || null;
   
-      if (imageUrl !== null) {
+      if (itemData && itemData.picture) {
+        const imageUrl = itemData.picture;
         return imageUrl;
       } else {
-        throw new Error("Image URL not found");
+        console.error('Invalid image data:', itemData);
+        throw new Error('Image data or URL not found');
       }
     } catch (error) {
-      console.error("Error fetching image URL:", error);
-      return "";
+      console.error('Error fetching image URL:', error);
+      return '';
     }
   };
 
@@ -118,6 +119,8 @@ const ChooseOutfitScreen: React.FC<ChooseOutfitScreenProps> = ({ navigation }) =
   };
 
   return (
+    <View style={{ flex: 1, backgroundColor: '#282b30' }}>
+    <View style={{ flex: 1, marginTop: 70, backgroundColor: '#282b30' }}>
     <GridView
       data={outfits}
       renderItem={(item) => (
@@ -135,17 +138,17 @@ const ChooseOutfitScreen: React.FC<ChooseOutfitScreenProps> = ({ navigation }) =
         </TouchableOpacity>
       )}
     ></GridView>
+    </View>
+    </View>
   );
 };
-
-export default ChooseOutfitScreen;
 
 const styles = StyleSheet.create({
   itemContainer: {
     height: 100,
     marginLeft: 10,
     marginRight: 10,
-    backgroundColor: "white",
+    backgroundColor: "#424549",
     borderRadius: 5,
     marginBottom: 10,
     justifyContent: "center",
@@ -163,7 +166,10 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "center",
     alignItems: "center",
-    maxWidth: 80,
+    maxWidth: 120,
+    marginTop: 10,
     marginBottom: 10,
   },
 });
+
+export default ChooseOutfitScreen;

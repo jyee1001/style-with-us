@@ -34,7 +34,7 @@ const Closet: React.FC<RouterProps> = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.titleContainer}>
-        <Text style={styles.screenTitle}>MY CLOSET</Text>
+        <Text style={styles.screenTitle}>MY WARDROBE</Text>
       </View>
       <View style={styles.blankBox}></View>
 
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
 
   blankBox: {
     width: 20,
-    height: 50,
+    height: 20,
     marginBottom: 80,
     backgroundColor: "transparent",
   },

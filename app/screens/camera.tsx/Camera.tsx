@@ -122,6 +122,14 @@ const Camera = () => {
             { label: " Shorts", value: "Shorts" },
             { label: " Shoes", value: "Shoes" },
           ]}
+          style={{
+            inputAndroid: {
+              color: '#E5E5E5',
+            },
+            inputIOS: {
+              color: '#E5E5E5',
+            },
+          }}
         />
       </View>
       <View style={styles.pickerContainer}>
@@ -137,6 +145,14 @@ const Camera = () => {
             { label: " Waterproof", value: "Waterproof" },
             { label: " Snowwear", value: "Snowwear" },
           ]}
+          style={{
+            inputAndroid: {
+              color: '#E5E5E5',
+            },
+            inputIOS: {
+              color: '#E5E5E5',
+            },
+          }}
         />
       </View>
       <View style={styles.pickerContainer}>
@@ -144,16 +160,31 @@ const Camera = () => {
           placeholder={{ label: " Select Main Color" }}
           onValueChange={(value) => setColor(value)}
           items={[
-            { label: " Blue", value: "Blue" },
-            { label: " Red", value: "Red" },
-            { label: " Green", value: "Green" },
-            { label: " Pink", value: "Pink" },
-            { label: " Yellow", value: "Yellow" },
             { label: " White", value: "White" },
             { label: " Black", value: "Black" },
             { label: " Grey", value: "Grey" },
             { label: " Brown", value: "Brown" },
+            { label: " Red", value: "Red" },
+            { label: " Orange", value: "Orange" },
+            { label: " Yellow", value: "Yellow" },
+            { label: " Green", value: "Green" },
+            { label: " Teal", value: "Teal" },
+            { label: " Blue", value: "Blue" },
+            { label: " Indigo", value: "Indigo" },
+            { label: " Violet", value: "Violet" },
+            { label: " Purple", value: "Purple" },
+            { label: " Pink", value: "Pink" },
+            { label: " Cyan", value: "Cyan" },
+            { label: " Maroon", value: "Maroon" },
           ]}
+          style={{
+            inputAndroid: {
+              color: '#E5E5E5',
+            },
+            inputIOS: {
+              color: '#E5E5E5',
+            },
+          }}
         />
       </View>
       <TouchableOpacity style={styles.submitButton} onPress={submitToFirestore}>
@@ -190,8 +221,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#008080",
-    marginTop: 30,
-    marginBottom: 30,
+    marginTop: 20,
+    marginBottom: 10,
   },
   pickerContainer: {
     justifyContent: "center",
@@ -212,7 +243,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#008080",
-    marginTop: 30,
+    marginTop: 20,
   },
   image: {
     flex: 1,
