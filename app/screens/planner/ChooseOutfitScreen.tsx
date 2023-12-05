@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     flexWrap: "wrap",
     justifyContent: "center",
     alignItems: "center",
-    maxWidth: 80,
+    maxWidth: 120,
     marginTop: 10,
     marginBottom: 10,
   },

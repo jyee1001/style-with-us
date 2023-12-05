@@ -89,6 +89,8 @@ const Home = ({ navigation }: RouterProps) => {
 
   const [welcome, setWelcome] = useState<string | null>("Style With Us!");
 
+  const [userPreference, setUserPreference] = useState("");
+
   const getRandomClothingItem = async (
     type: ClothingType,
     attire: ClothingStyle
@@ -134,6 +136,9 @@ const Home = ({ navigation }: RouterProps) => {
             setWelcome(null);
             return;
           }
+          setUserPreference(stylePreference);
+          console.log("User Preference is: ");
+          console.log(userPreference);
 
     let theHat = null;
     let theJacket = null;
@@ -941,6 +946,30 @@ console.error('Error fetching user data:', error);
   const saveOutfit = async () => {
     if (outfit) {
       try {
+        if (outfitStyle === "Your Preferred Style") {
+          if (userPreference === "Casual") {
+            setOutfitStyle("Casual");
+          }
+          else if (userPreference === "Formal/Elegant") {
+            setOutfitStyle("Formal/Elegant");
+          }
+          else if (userPreference === "Business Casual") {
+            setOutfitStyle("Business Casual");
+          }
+          else if (userPreference === "Sporty") {
+            setOutfitStyle("Sporty");
+          }
+          else if (userPreference === "Relaxed") {
+            setOutfitStyle("Relaxed");
+          }
+          else if (userPreference === "Streetwear") {
+            setOutfitStyle("Streetwear");
+          }
+          else if (userPreference === "Retro") {
+            setOutfitStyle("Retro");
+          }
+        }
+
         const outfitsRef = collection(FIRESTORE_DB, "Outfits");
         const outfitData = {
           hatId: outfit.hat?.id || null,
@@ -1226,6 +1255,7 @@ const styles = StyleSheet.create({
   outfitContainer: {
     flex: 1,
     justifyContent: "center",
+    //alignItems: "center",
     width: "50%",
     marginBottom: 20,
   },
@@ -1233,17 +1263,17 @@ const styles = StyleSheet.create({
   clothingItemContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 20,
+    marginBottom: 10,
   },
 
   imageContainer: {
-    width: 75,
-    height: 75,
+    width: 65,
+    height: 65,
   },
 
   image: {
-    width: 75,
-    height: 75,
+    width: 65,
+    height: 65,
     resizeMode: "cover",
     borderColor: "#424549",
     borderRadius: 8,
@@ -1314,7 +1344,8 @@ const styles = StyleSheet.create({
     //touchAction: "manipulation",
     width: 120,
     height: 40,
-    marginLeft: 40,
+    marginLeft: 37,
+    marginTop: 5,
     borderRadius: 5,
     justifyContent: 'center',
     alignItems: 'center',
