@@ -54,19 +54,21 @@ const Hats = () => {
   }, []);
 
   return (
+    <View style={{ flex: 1, backgroundColor: '#282b30' }}>
     <SafeAreaView>
       <GridView
         data={hats}
         renderItem={(item) => (
           <View style={styles.itemContainer}>
             <Image source={{ uri: item.picture }} style={styles.image} />
-            <TouchableOpacity onPress={() => handleDeleteHat(item.id)}>
-              <Text>Delete</Text>
+            <TouchableOpacity onPress={() => handleDeleteHat(item.id)} style={[styles.deleteButton, { backgroundColor: '#008080' }]}>
+              <Text style={styles.buttonText}>Delete</Text>
             </TouchableOpacity>
           </View>
         )}
       />
     </SafeAreaView>
+    </View>
   );
 };
 
@@ -74,19 +76,35 @@ export default Hats;
 
 const styles = StyleSheet.create({
   itemContainer: {
-    height: 200,
+    height: 180,
     marginLeft: 10,
     marginRight: 10,
-    backgroundColor: "white",
-    borderRadius: 5,
+    //backgroundColor: "#424549",
+    backgroundColor: "transparent",
     marginBottom: 10,
     justifyContent: "center",
     alignItems: "center",
+    width: 155,
   },
   image: {
-    width: 200,
-    height: 200,
+    width: 100,
+    height: 100,
     flex: 1,
     aspectRatio: 1,
+    borderWidth: 5,
+    borderColor: "#424549",
+    borderRadius: 20,
+  },
+  deleteButton: {
+    marginTop: 10,
+    width: 120,
+    height: 40,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#E5E5E5',
+    fontSize: 14,
   },
 });

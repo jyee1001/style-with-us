@@ -251,12 +251,12 @@ const styles = StyleSheet.create({
   },
   screenTitle: {
     fontSize: 30,
-    marginTop: 70,
+    marginTop: 77,
     color: "#E5E5E5",
     fontWeight: "500",
   },
   calendarContainer: {
-    marginTop: 100,
+    marginTop: 80,
     alignItems: "center",
   },
   dateContainer: {
