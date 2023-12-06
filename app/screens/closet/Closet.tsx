@@ -70,6 +70,16 @@ const Closet: React.FC<RouterProps> = ({ navigation }) => {
             id: 6,
             uri: "https://i.ibb.co/54QbJbN/shoe.png",
           },
+          {
+            name: "Dresses",
+            id: 7,
+            uri: "https://i.ibb.co/mytcXc7/dress.png",
+          },
+          {
+            name: "Accessories",
+            id: 8,
+            uri: "https://i.ibb.co/FwJtNDk/watch.png",
+          },
         ]}
         renderItem={(item) => (
           <TouchableOpacity
@@ -141,7 +151,7 @@ const styles = StyleSheet.create({
   blankBox: {
     width: 20,
     height: 20,
-    marginBottom: 80,
+    marginBottom: 30,
     backgroundColor: "transparent",
   },
   outfitsButton: {
