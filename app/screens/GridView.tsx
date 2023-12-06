@@ -28,7 +28,7 @@ const GridView = <T extends any>(props: Props<T>) => {
 };
 
 const styles = StyleSheet.create({
-  container: { width: "100%", flexDirection: "row", flexWrap: "wrap" },
+  container: { flexGrow: 1, justifyContent: "space-between" },
 });
 
 export default GridView;
