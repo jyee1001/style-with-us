@@ -10,6 +10,8 @@ import Shirts from "../closet/Shirts";
 import Shoes from "../closet/Shoes";
 import Hats from "../closet/Hats";
 import Outfits from "../closet/Outfits";
+import Dresses from "../closet/Dresses";
+import Accessories from "../closet/Accessories";
 
 const ClosetStack = createNativeStackNavigator();
 const ClosetNavigator = () => {
@@ -22,6 +24,9 @@ const ClosetNavigator = () => {
       <ClosetStack.Screen name="Hats" component={Hats} />
       <ClosetStack.Screen name="Jackets" component={Jackets} />
       <ClosetStack.Screen name="Shoes" component={Shoes} />
+      <ClosetStack.Screen name="Dresses" component={Dresses} />
+      <ClosetStack.Screen name="Accessories" component={Accessories} />
+
       <ClosetStack.Screen name="Outfits" component={Outfits} />
     </ClosetStack.Navigator>
   );

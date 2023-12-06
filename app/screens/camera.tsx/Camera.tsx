@@ -121,13 +121,15 @@ const Camera = () => {
             { label: " Pants", value: "Pants" },
             { label: " Shorts", value: "Shorts" },
             { label: " Shoes", value: "Shoes" },
+            { label: " Dresses", value: "Dresses" },
+            { label: " Accessories", value: "Accessories" },
           ]}
           style={{
             inputAndroid: {
-              color: '#E5E5E5',
+              color: "#E5E5E5",
             },
             inputIOS: {
-              color: '#E5E5E5',
+              color: "#E5E5E5",
             },
           }}
         />
@@ -147,10 +149,10 @@ const Camera = () => {
           ]}
           style={{
             inputAndroid: {
-              color: '#E5E5E5',
+              color: "#E5E5E5",
             },
             inputIOS: {
-              color: '#E5E5E5',
+              color: "#E5E5E5",
             },
           }}
         />
@@ -179,10 +181,10 @@ const Camera = () => {
           ]}
           style={{
             inputAndroid: {
-              color: '#E5E5E5',
+              color: "#E5E5E5",
             },
             inputIOS: {
-              color: '#E5E5E5',
+              color: "#E5E5E5",
             },
           }}
         />
