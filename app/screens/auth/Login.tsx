@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   Button,
   KeyboardAvoidingView,
+  TouchableOpacity,
 } from "react-native";
 import React, { useState } from "react";
 import { FIREBASE_AUTH } from "../../../FirebaseConfig";
@@ -56,7 +57,7 @@ const Login = () => {
     <View style={styles.container}>
       <Image
         style={styles.logo}
-        source={{ uri: "https://i.ibb.co/wskCQMB/style-with-us-logo.png" }}
+        source={{ uri: "https://i.ibb.co/pLmp6bL/swulogo.png" }}
       />
 
       <KeyboardAvoidingView behavior="padding">
@@ -80,8 +81,13 @@ const Login = () => {
           <ActivityIndicator size="large" color="#0000ff" />
         ) : (
           <>
-            <Button color="white" title="Login" onPress={signIn} />
-            <Button color="white" title="Create Account" onPress={signUp} />
+            <TouchableOpacity style={styles.button} onPress={signIn}>
+              <Text style={styles.text}>Login</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.button} onPress={signUp}>
+              <Text style={styles.text}>Create Account</Text>
+            </TouchableOpacity>
           </>
         )}
       </KeyboardAvoidingView>
@@ -95,7 +101,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "flex-start",
-    backgroundColor: "black",
+    backgroundColor: "#282b30",
     alignItems: "center",
     //flexDirection: 'column'
   },
@@ -115,5 +121,19 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 10,
     backgroundColor: "#fff",
+  },
+  button: {
+    width: 110,
+    height: 40,
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+    alignSelf: "center",
+    backgroundColor: "#008080",
+    marginTop: 30,
+  },
+  text: {
+    color: "#E5E5E5",
   },
 });
