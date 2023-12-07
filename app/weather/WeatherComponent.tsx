@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import * as Location from "expo-location";
+import { WEATHER_API_KEY } from "../../config";
 
 interface ForecastData {
   current: {
@@ -24,7 +25,7 @@ interface ForecastData {
   }[];
 }
 
-const openWeatherKey = "4e4c2d8cf82b7c8cdb4c743f9cdcdcd3";
+const openWeatherKey = WEATHER_API_KEY;
 
 const WeatherComponent = () => {
   const [forecast, setForecast] = useState<ForecastData | null>(null);
@@ -76,7 +77,9 @@ const WeatherComponent = () => {
               uri: `http://openweathermap.org/img/wn/${current.icon}@2x.png`,
             }}
           />
-          <Text style={{ color: '#E5E5E5' }}>{Math.round(forecast.current.temp)}°F</Text>
+          <Text style={{ color: "#E5E5E5" }}>
+            {Math.round(forecast.current.temp)}°F
+          </Text>
           <TouchableOpacity>
             <Text
               onPress={() => {
