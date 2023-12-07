@@ -22,11 +22,11 @@
 
 ### Built With
 
-React Native
-Type Script
-Google Firebase
-Expo Go
-VS Code
+React Native  
+ Type Script  
+ Google Firebase  
+ Expo Go  
+ VS Code
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
