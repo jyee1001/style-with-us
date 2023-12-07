@@ -49,16 +49,15 @@ type ClothingStyle =
   | "Retro"
   | "Waterproof"
   | "Snowwear";
-//Dont forget to make (camera) based on this criteria^ but Remove business casual and relaxed from the camera.
 type Weather =
   | "Sunny"
   | "Cloudy"
   | "Rainy"
   | "Snowy"
   | "Hot (80\u00b0F or more)"
-  | "Warm (70\u00b0F to 80\u00b0F)"
-  | "Cool (60 \u00b0F to 70\u00b0F)"
-  | "Cold (less than 60\u00b0F)";
+  | "Warm (70\u00b0F to 79\u00b0F)"
+  | "Cool (60 \u00b0F to 69\u00b0F)"
+  | "Cold (59\u00b0F or less)";
 
 type ClothingItem = {
   id: string;
@@ -275,7 +274,7 @@ const Home = ({ navigation }: RouterProps) => {
       }
     } else if (
       weather === "Cloudy" ||
-      weather === "Cold (less than 60\u00b0F)"
+      weather === "Cold (59\u00b0F or less)"
     ) {
       if (outfitStyle === "Casual" || (outfitStyle === "Your Preferred Style" && stylePreference === "Casual")) {
         theJacket = await getRandomClothingItem("Jackets", "Casual");
@@ -654,7 +653,7 @@ const Home = ({ navigation }: RouterProps) => {
           return;
         }
       }
-    } else if (weather === "Warm (70\u00b0F to 80\u00b0F)") {
+    } else if (weather === "Warm (70\u00b0F to 79\u00b0F)") {
       if (outfitStyle === "Casual" || (outfitStyle === "Your Preferred Style" && stylePreference === "Casual")) {
         theHat = await getRandomClothingItem("Hats", "Casual");
         theShirt = await getRandomClothingItem("Shirts", "Casual");
@@ -797,7 +796,7 @@ const Home = ({ navigation }: RouterProps) => {
           theHat = null;
         }
       }
-    } else if (weather === "Cool (60 \u00b0F to 70\u00b0F)") {
+    } else if (weather === "Cool (60 \u00b0F to 69\u00b0F)") {
       if (outfitStyle === "Casual" || (outfitStyle === "Your Preferred Style" && stylePreference === "Casual")) {
         theJacket = await getRandomClothingItem("Jackets", "Casual");
         theShirt = await getRandomClothingItem("Shirts", "Casual");
@@ -1154,16 +1153,16 @@ console.error('Error fetching user data:', error);
                 value: "Hot (80\u00b0F or more)",
               },
               {
-                label: " Warm (70\u00b0F to 80\u00b0F)",
-                value: "Warm (70\u00b0F to 80\u00b0F)",
+                label: " Warm (70\u00b0F to 79\u00b0F)",
+                value: "Warm (70\u00b0F to 79\u00b0F)",
               },
               {
-                label: " Cool (60 \u00b0F to 70\u00b0F)",
-                value: "Cool (60 \u00b0F to 70\u00b0F)",
+                label: " Cool (60 \u00b0F to 69\u00b0F)",
+                value: "Cool (60 \u00b0F to 69\u00b0F)",
               },
               {
-                label: " Cold (less than 60\u00b0F)",
-                value: "Cold (less than 60\u00b0F)",
+                label: " Cold (59\u00b0F or less)",
+                value: "Cold (59\u00b0F or less)",
               },
             ]}
             style={{
