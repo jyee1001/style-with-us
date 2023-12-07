@@ -13,6 +13,9 @@
     The problem that our project, a virtual online wardrobe, addresses is the challenge of managing a large and diverse collection of clothing items in an efficient and organized manner. Many people struggle with keeping track of their clothing, especially when their collection grows over time. This can lead to frustration, cluttered wardrobes, and wasted time trying to find the right outfit for a specific occasion.
     
   </p>
+  <p align="center">
+  github link: https://github.com/jyee1001/style-with-us
+  </p>
 
 <!-- ABOUT THE PROJECT -->
 
@@ -90,4 +93,14 @@ This is an example of how to list things you need to use the software and how to
 2. Virtual Wardrobe, organizing clothes
 3. Allow users to upload clothing items with the use of phone camera
 4. Outfit Date planning
-5. User preferences stored in database
+5. User preferences stored in
+
+### Code Struture
+
+Folder named screens contains folders for each screen component feature of our app. For example for our home page there is a folder called home. There are folders for the closet screen, profile screen, etc.
+
+There is also a navigator folder, which contains all the stack navigators to handle switching of screens on the phone.
+
+There is a weather component folder which handles, the retrieving of the weather API data and display it on the screen.
+
+Finally, there is a Firebase configuration file, where developers/users would input their database API key.
