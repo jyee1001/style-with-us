@@ -1,10 +1,11 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
+import { FIREBASE_API_KEY } from "./config";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyB9y9xSRGp-s_o2RwILOefcQDrcvREbjM8",
+  apiKey: FIREBASE_API_KEY,
   authDomain: "style-with-us.firebaseapp.com",
   projectId: "style-with-us",
   storageBucket: "style-with-us.appspot.com",
